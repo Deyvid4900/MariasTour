@@ -1,0 +1,49 @@
+[
+  {
+    "id": "1790186701605-332617cf433d5",
+    "nome": "Cliente Novo",
+    "email": "cliente@novo.com",
+    "destino": "Petrópolis",
+    "status": "Respondido"
+  },
+  {
+    "id": "1790186272156-d1df584ccec65",
+    "nome": "Deyvid",
+    "email": "deyvid@gmail.com",
+    "numero": "(21) 98888-1234",
+    "destino": "América Latina",
+    "status": "Respondido"
+  },
+  {
+    "id": "1790186103102-0558bb5fb29f7",
+    "nome": "Teste API",
+    "email": "teste@api.com",
+    "numero": "(21) 97777-0000",
+    "destino": "Ilha Grande",
+    "status": "Respondido"
+  },
+  {
+    "id": "budget-1",
+    "nome": "Laura Santos",
+    "email": "laura@email.com",
+    "numero": "(21) 99999-1111",
+    "destino": "Ilha Grande",
+    "status": "Respondido"
+  },
+  {
+    "id": "budget-2",
+    "nome": "Pedro Almeida",
+    "email": "pedro@email.com",
+    "numero": "(21) 98888-2222",
+    "destino": "Petrópolis",
+    "status": "Respondido"
+  },
+  {
+    "id": "budget-3",
+    "nome": "Marina Costa",
+    "email": "marina@email.com",
+    "numero": "(28) 97777-3333",
+    "destino": "Show Luan Santana",
+    "status": "Pendente"
+  }
+]

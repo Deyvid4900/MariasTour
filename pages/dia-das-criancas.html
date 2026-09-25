@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MariaTour | Dia das Crianças</title>
+    <meta name="description" content="Bate e volta para o Dia das Crianças com diversão, organização e programação especial para toda a família." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../index.css" />
+    <style>
+      .page-hero { padding: 72px 0 36px; }
+      .page-hero-card {
+        position: relative; min-height: 500px; display: flex; align-items: flex-end; border-radius: 30px; overflow: hidden;
+        background: url("https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=1400&q=80") center/cover no-repeat; box-shadow: var(--shadow);
+      }
+      .page-hero-overlay { width: 100%; padding: 36px 28px; background: linear-gradient(180deg, rgba(12,18,22,0.1), rgba(12,18,22,0.75)); color: white; }
+      .page-hero-overlay h1 { margin-bottom: 10px; }
+      .page-content { padding: 40px 0 90px; }
+      .destination-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 28px; }
+      .info-card, .package-card { background: rgba(255,255,255,0.9); border-radius: 22px; box-shadow: var(--shadow); padding: 26px; border: 1px solid rgba(29,36,51,0.04); }
+      .info-card h2, .package-card h3 { margin-bottom: 18px; }
+      .highlights { list-style: none; padding: 0; margin: 20px 0 0; display: grid; gap: 12px; }
+      .highlights li { display: flex; align-items: center; gap: 10px; color: var(--text); font-weight: 600; }
+      .highlights li::before { content: "✦"; color: var(--primary); }
+      .price-box { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 18px 0 24px; padding: 18px 20px; border-radius: 16px; background: rgba(31,111,120,0.08); }
+      .price-box strong { font-size: 2rem; color: var(--secondary); }
+      .package-card ul { list-style: none; padding: 0; margin: 0 0 24px; display: grid; gap: 12px; }
+      .package-card li { color: var(--muted); padding-bottom: 8px; border-bottom: 1px solid rgba(29,36,51,0.06); }
+      @media (max-width: 900px) { .destination-grid { grid-template-columns: 1fr; } }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container nav-wrap">
+        <a href="../index.html" class="brand" aria-label="MariaTour home">
+          <span class="brand-mark">M</span>
+          <span>MariaTour</span>
+        </a>
+        <nav class="main-nav" aria-label="Menu principal">
+          <a href="../index.html#destinos">Destinos</a>
+          <a href="../index.html#experiencias">Experiências</a>
+          <a href="../index.html#galeria">Galeria</a>
+          <a href="../index.html#contato">Contato</a>
+        </nav>
+        <a class="btn btn-primary nav-cta" href="../index.html#contato">Reservar agora</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-hero">
+        <div class="container">
+          <div class="page-hero-card">
+            <div class="page-hero-overlay">
+              <span class="eyebrow">Especial para família</span>
+              <h1>Dia das Crianças</h1>
+              <p>Uma programação divertida e segura para as crianças aproveitarem um dia cheio de alegria com toda a família.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page-content">
+        <div class="container destination-grid">
+          <article class="info-card">
+            <span class="eyebrow">Sobre a excursão</span>
+            <h2>Uma experiência feliz para todas as idades</h2>
+            <p>O bate e volta para o Dia das Crianças foi pensado para reunir diversão, conforto e segurança em uma jornada cheia de boas lembranças para crianças e pais.</p>
+            <ul class="highlights">
+              <li>Atividades e entretenimento para crianças</li>
+              <li>Programação organizada e segura</li>
+              <li>Ambiente familiar e acolhedor</li>
+              <li>Ideal para comemorar o dia com alegria</li>
+            </ul>
+          </article>
+
+          <aside class="package-card">
+            <h3>Inclusões</h3>
+            <div class="price-box">
+              <span>Valor</span>
+              <strong>adulto R$ 259,90</strong>
+            </div>
+            <p style="margin-bottom: 18px; color: var(--muted); font-weight: 600;">Criança: R$ 219,00.</p>
+            <ul>
+              <li>Transporte ida e volta</li>
+              <li>Programação especial para o evento</li>
+              <li>Atendimento e suporte durante a viagem</li>
+              <li>Experiência divertida para toda a família</li>
+            </ul>
+            <a class="btn btn-primary" href="../index.html#contato">Solicitar orçamento</a>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-wrap">
+        <div>
+          <a href="../index.html" class="brand brand-footer">
+            <span class="brand-mark">M</span>
+            <span>MariaTour</span>
+          </a>
+        </div>
+        <p>© <span id="year"></span> MariaTour. Todos os direitos reservados.</p>
+        <div class="socials" aria-label="Redes sociais">
+          <a href="#" aria-label="Instagram">Instagram</a>
+          <a href="#" aria-label="Facebook">Facebook</a>
+          <a href="#" aria-label="WhatsApp">WhatsApp</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="../index.js"></script>
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>

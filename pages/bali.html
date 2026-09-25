@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MariaTour | Bali</title>
+    <meta
+      name="description"
+      content="Descubra Bali com a MariaTour: praias paradisíacas, templos, cultura e experiências inesquecíveis."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../index.css" />
+    <style>
+      .page-hero {
+        padding: 72px 0 36px;
+      }
+
+      .page-hero-card {
+        position: relative;
+        min-height: 500px;
+        display: flex;
+        align-items: flex-end;
+        border-radius: 30px;
+        overflow: hidden;
+        background: url("https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1400&q=80") center/cover no-repeat;
+        box-shadow: var(--shadow);
+      }
+
+      .page-hero-overlay {
+        width: 100%;
+        padding: 36px 28px;
+        background: linear-gradient(180deg, rgba(12, 18, 22, 0.1), rgba(12, 18, 22, 0.72));
+        color: white;
+      }
+
+      .page-hero-overlay h1 {
+        margin-bottom: 10px;
+      }
+
+      .page-content {
+        padding: 40px 0 90px;
+      }
+
+      .destination-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 28px;
+      }
+
+      .info-card,
+      .package-card {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 22px;
+        box-shadow: var(--shadow);
+        padding: 26px;
+        border: 1px solid rgba(29, 36, 51, 0.04);
+      }
+
+      .info-card h2,
+      .package-card h3 {
+        margin-bottom: 18px;
+      }
+
+      .highlights {
+        list-style: none;
+        padding: 0;
+        margin: 20px 0 0;
+        display: grid;
+        gap: 12px;
+      }
+
+      .highlights li {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      .highlights li::before {
+        content: "✦";
+        color: var(--primary);
+      }
+
+      .price-box {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin: 18px 0 24px;
+        padding: 18px 20px;
+        border-radius: 16px;
+        background: rgba(31, 111, 120, 0.08);
+      }
+
+      .price-box strong {
+        font-size: 2rem;
+        color: var(--secondary);
+      }
+
+      .package-card ul {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 24px;
+        display: grid;
+        gap: 12px;
+      }
+
+      .package-card li {
+        color: var(--muted);
+        padding-bottom: 8px;
+        border-bottom: 1px solid rgba(29, 36, 51, 0.06);
+      }
+
+      @media (max-width: 900px) {
+        .destination-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container nav-wrap">
+        <a href="../index.html" class="brand" aria-label="MariaTour home">
+          <span class="brand-mark">M</span>
+          <span>MariaTour</span>
+        </a>
+
+        <nav class="main-nav" aria-label="Menu principal">
+          <a href="../index.html#destinos">Destinos</a>
+          <a href="../index.html#experiencias">Experiências</a>
+          <a href="../index.html#depoimentos">Depoimentos</a>
+          <a href="../index.html#contato">Contato</a>
+        </nav>
+
+        <a class="btn btn-primary nav-cta" href="../index.html#contato">Reservar agora</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-hero">
+        <div class="container">
+          <div class="page-hero-card">
+            <div class="page-hero-overlay">
+              <span class="eyebrow">Destino exclusivo</span>
+              <h1>Bali, Indonésia</h1>
+              <p>Praias incríveis, espiritualidade, natureza exuberante e cultura milenar.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page-content">
+        <div class="container destination-grid">
+          <article class="info-card">
+            <span class="eyebrow">Sobre o destino</span>
+            <h2>Uma mistura de relaxamento e aventura</h2>
+            <p>
+              Bali conecta praias de areia branca, montanhas verdes, campos de arroz e templos históricos.
+              É um destino ideal para quem deseja combinar descanso, beleza natural e experiências culturais únicas.
+            </p>
+
+            <ul class="highlights">
+              <li>Beach clubs e piscinas com vista para o mar</li>
+              <li>Trilhas em montanhas e cachoeiras</li>
+              <li>Templos e cerimônias tradicionais autênticas</li>
+              <li>Gastronomia local e experiências de spa</li>
+            </ul>
+          </article>
+
+          <aside class="package-card">
+            <h3>Pacote ideal</h3>
+            <div class="price-box">
+              <span>Desde</span>
+              <strong>R$ 4.600</strong>
+            </div>
+
+            <ul>
+              <li>7 noites em hotel 4 estrelas</li>
+              <li>Traslados ao aeroporto e entre cidades</li>
+              <li>Tour guiado em Ubud e Seminyak</li>
+              <li>Almoço típico incluso em 2 dias</li>
+              <li>Suporte local 24 horas</li>
+            </ul>
+
+            <a class="btn btn-primary" href="../index.html#contato">Solicitar orçamento</a>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section" style="padding-top: 0;">
+        <div class="container">
+          <div class="section-heading">
+            <span class="eyebrow">Galeria</span>
+            <h2>Vislumbres de Bali</h2>
+          </div>
+
+          <div class="gallery-grid">
+            <figure class="gallery-item gallery-item--large">
+              <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1200&q=80" alt="Praia de Bali" />
+            </figure>
+            <figure class="gallery-item">
+              <img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=900&q=80" alt="Praia com mar calmo" />
+            </figure>
+            <figure class="gallery-item">
+              <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80" alt="Paisagem verde e montanhosa" />
+            </figure>
+            <figure class="gallery-item">
+              <img src="https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=900&q=80" alt="Oceano e atividades de praia" />
+            </figure>
+            <figure class="gallery-item">
+              <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=900&q=80" alt="Paisagem natural de Bali" />
+            </figure>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-wrap">
+        <div>
+          <a href="../index.html" class="brand brand-footer">
+            <span class="brand-mark">M</span>
+            <span>MariaTour</span>
+          </a>
+        </div>
+        <p>© <span id="year"></span> MariaTour. Todos os direitos reservados.</p>
+        <div class="socials" aria-label="Redes sociais">
+          <a href="#" aria-label="Instagram">Instagram</a>
+          <a href="#" aria-label="Facebook">Facebook</a>
+          <a href="#" aria-label="WhatsApp">WhatsApp</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="../index.js"></script>
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>

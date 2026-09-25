@@ -2,8 +2,11 @@ const navToggle = document.querySelector('.nav-toggle');
 const mainNav = document.querySelector('.main-nav');
 const yearEl = document.querySelector('#year');
 const filterButtons = document.querySelectorAll('.filter-btn');
-const tourCards = document.querySelectorAll('.tour-card');
 const contactForm = document.querySelector('.contact-form');
+const homeList = document.getElementById('tour-list');
+const tourDetail = document.getElementById('tour-detail');
+const API_URL = 'http://localhost:3000/api/excursions';
+const BUDGET_API_URL = 'http://localhost:3000/api/budget-requests';
 
 if (yearEl) {
   yearEl.textContent = new Date().getFullYear();
@@ -23,34 +26,134 @@ if (navToggle && mainNav) {
   });
 }
 
-filterButtons.forEach((button) => {
-  button.addEventListener('click', () => {
-    const selectedFilter = button.dataset.filter;
+const renderTours = (items) => {
+  if (!homeList) return;
 
-    filterButtons.forEach((btn) => btn.classList.toggle('active', btn === button));
+  homeList.innerHTML = items.map((item) => `
+    <article class="tour-card" data-category="${item.categoria}">
+      <img src="${item.imagem}" alt="${item.titulo}" />
+      <div class="tour-body">
+        <div class="tour-tag">${item.categoria}</div>
+        <h3>${item.titulo}</h3>
+        <p>${item.descricao}</p>
+        <div class="tour-meta">
+          <span>${item.duracao}</span>
+          <span>${item.preco}</span>
+        </div>
+        <a class="card-link" href="pages/passeio.html?id=${encodeURIComponent(item.id)}">Ver excursão</a>
+      </div>
+    </article>
+  `).join('');
 
-    tourCards.forEach((card) => {
-      const matches = selectedFilter === 'all' || card.dataset.category === selectedFilter;
-      card.classList.toggle('hidden', !matches);
+  const cards = document.querySelectorAll('.tour-card');
+  filterButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const selectedFilter = button.dataset.filter;
+      filterButtons.forEach((btn) => btn.classList.toggle('active', btn === button));
+
+      cards.forEach((card) => {
+        const matches = selectedFilter === 'all' || card.dataset.category === selectedFilter;
+        card.classList.toggle('hidden', !matches);
+      });
     });
   });
-});
+};
+
+const loadTours = async () => {
+  try {
+    const response = await fetch(API_URL);
+    if (!response.ok) throw new Error('Erro ao buscar excursões');
+    const excursions = await response.json();
+    renderTours(excursions);
+  } catch (error) {
+    console.error(error);
+    if (homeList) {
+      homeList.innerHTML = '<p>Não foi possível carregar as excursões no momento.</p>';
+    }
+  }
+};
+
+const loadTourDetail = async () => {
+  const tourId = new URLSearchParams(window.location.search).get('id');
+  const loading = document.getElementById('tour-loading');
+  const content = document.getElementById('tour-content');
+  const error = document.getElementById('tour-error');
+
+  try {
+    if (!tourId) throw new Error('Passeio não informado');
+
+    const response = await fetch(API_URL);
+    if (!response.ok) throw new Error('Erro ao buscar passeio');
+
+    const items = await response.json();
+    const item = items.find((tour) => String(tour.id) === tourId);
+    if (!item) throw new Error('Passeio não encontrado');
+
+    document.title = `MariaTour | ${item.titulo}`;
+    document.getElementById('tour-title').textContent = item.titulo;
+    document.getElementById('tour-category').textContent = item.categoria;
+    document.getElementById('tour-description').textContent = item.descricao;
+    document.getElementById('tour-description-detail').textContent = item.descricao;
+    document.getElementById('tour-about-title').textContent = item.titulo;
+    document.getElementById('tour-price').textContent = item.preco;
+    document.getElementById('tour-duration').textContent = item.duracao;
+
+    const image = document.getElementById('tour-image');
+    image.src = item.imagem;
+    image.alt = item.titulo;
+
+    loading.classList.add('hidden');
+    content.classList.remove('hidden');
+  } catch (loadError) {
+    console.error(loadError);
+    loading.classList.add('hidden');
+    error.classList.remove('hidden');
+  }
+};
+
+if (homeList) loadTours();
+if (tourDetail) loadTourDetail();
 
 if (contactForm) {
-  contactForm.addEventListener('submit', (event) => {
+  contactForm.addEventListener('submit', async (event) => {
     event.preventDefault();
+
+    const nome = contactForm.querySelector('input[type="text"]').value.trim();
+    const email = contactForm.querySelector('input[type="email"]').value.trim();
+    const numero = contactForm.querySelector('input[type="tel"]').value.trim();
+    const destino = contactForm.querySelector('select').value;
     const button = contactForm.querySelector('button');
 
-    if (button) {
-      const originalText = button.textContent;
-      button.textContent = 'Solicitação enviada!';
-      button.disabled = true;
+    if (!nome || !email || !numero || !destino) {
+      alert('Preencha nome, e-mail, número e destino para continuar.');
+      return;
+    }
 
-      setTimeout(() => {
-        button.textContent = originalText;
-        button.disabled = false;
-        contactForm.reset();
-      }, 1800);
+    try {
+      const response = await fetch(BUDGET_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nome, email, numero, destino, status: 'Pendente' })
+      });
+
+      if (!response.ok) {
+        throw new Error('Erro ao enviar orçamento');
+      }
+
+      if (button) {
+        const originalText = button.textContent;
+        button.textContent = 'Solicitação enviada!';
+        button.disabled = true;
+
+        setTimeout(() => {
+          button.textContent = originalText;
+          button.disabled = false;
+          contactForm.reset();
+        }, 1800);
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Não foi possível enviar a solicitação. Tente novamente.');
     }
   });
 }

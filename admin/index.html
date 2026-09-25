@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MariaTour | Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../index.css" />
+    <style>
+      :root {
+        --admin-bg: #f7f2eb;
+        --admin-panel: #ffffff;
+        --admin-panel-soft: #f6efe9;
+        --admin-card: #fffdfb;
+        --admin-border: rgba(109, 84, 65, 0.12);
+        --admin-text: #2c221d;
+        --admin-muted: #6a564e;
+        --admin-accent: #d9774c;
+        --admin-accent-strong: #b85a2d;
+        --admin-secondary: #2d7d73;
+        --admin-secondary-soft: rgba(45, 125, 115, 0.12);
+      }
+
+      body {
+        background: linear-gradient(180deg, #f4efe9 0%, #f9f5f1 100%);
+        color: var(--admin-text);
+      }
+
+      .admin-shell {
+        min-height: 100vh;
+        padding: 32px 0 80px;
+      }
+
+      .admin-card {
+        background: rgba(255, 255, 255, 0.82);
+        border: 1px solid var(--admin-border);
+        border-radius: 24px;
+        box-shadow: 0 18px 42px rgba(88, 63, 46, 0.08);
+        padding: 28px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .login-box {
+        max-width: 420px;
+        margin: 80px auto;
+      }
+
+      .login-box input,
+      .login-box select,
+      .admin-form input,
+      .admin-form textarea,
+      .admin-form select {
+        width: 100%;
+        border: 1px solid rgba(109, 84, 65, 0.18);
+        border-radius: 12px;
+        padding: 0.9rem 1rem;
+        font: inherit;
+        margin-top: 8px;
+        background: #fff;
+        color: var(--admin-text);
+      }
+
+      .admin-form {
+        display: grid;
+        gap: 16px;
+        margin-top: 20px;
+      }
+
+      .admin-form label {
+        color: var(--admin-muted);
+        font-weight: 600;
+      }
+
+      .admin-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 16px;
+      }
+
+      .admin-layout {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 24px;
+        min-height: 760px;
+      }
+
+      .admin-main {
+        display: grid;
+        gap: 24px;
+      }
+
+      .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .metric-card {
+        background: linear-gradient(180deg, #fffaf5 0%, #fff 100%);
+        border: 1px solid var(--admin-border);
+        border-radius: 18px;
+        padding: 18px 20px;
+      }
+
+      .metric-label {
+        color: var(--admin-muted);
+        font-size: 0.82rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-weight: 700;
+      }
+
+      .metric-value {
+        display: block;
+        margin-top: 10px;
+        font-size: clamp(1.8rem, 2vw, 2.4rem);
+        font-weight: 800;
+        color: var(--admin-text);
+      }
+
+      .metric-trend {
+        display: inline-block;
+        margin-top: 8px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--admin-secondary);
+        background: var(--admin-secondary-soft);
+        border-radius: 999px;
+        padding: 0.36rem 0.7rem;
+      }
+
+      .content-grid {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 24px;
+      }
+
+      .panel-box {
+        background: linear-gradient(180deg, #fffaf5 0%, #fff 100%);
+        border: 1px solid var(--admin-border);
+        border-radius: 20px;
+        padding: 22px;
+      }
+
+      .panel-box h3 {
+        margin-bottom: 18px;
+      }
+
+      .admin-list {
+        display: grid;
+        gap: 18px;
+        margin-top: 24px;
+      }
+
+      .admin-item {
+        border: 1px solid var(--admin-border);
+        border-radius: 18px;
+        padding: 18px;
+        background: linear-gradient(180deg, #fffaf5 0%, #fff 100%);
+      }
+
+      .admin-item-header {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .admin-item h3 {
+        color: var(--admin-text);
+      }
+
+      .admin-item p {
+        margin: 0;
+        color: var(--admin-muted);
+      }
+
+      .muted {
+        color: var(--admin-muted);
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      .eyebrow {
+        color: var(--admin-accent-strong);
+      }
+
+      .budget-table-wrapper {
+        overflow-x: auto;
+      }
+
+      .budget-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 14px;
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+      }
+
+      .budget-table th,
+      .budget-table td {
+        padding: 14px 16px;
+        text-align: left;
+        border-bottom: 1px solid var(--admin-border);
+      }
+
+      .budget-table th {
+        color: var(--admin-muted);
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+
+      .budget-table tbody tr:hover {
+        background: rgba(217, 119, 76, 0.03);
+      }
+
+      .status-action {
+        border: none;
+        border-radius: 999px;
+        padding: 0.45rem 0.8rem;
+        font-size: 0.75rem;
+        font-weight: 800;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+      }
+
+      .status-action:hover {
+        transform: translateY(-1px);
+      }
+
+      .status-action.pending {
+        background: rgba(217, 119, 76, 0.12);
+        color: var(--admin-accent-strong);
+      }
+
+      .status-action.done {
+        background: rgba(45, 125, 115, 0.12);
+        color: var(--admin-secondary);
+      }
+
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        padding: 0.45rem 0.8rem;
+        font-size: 0.75rem;
+        font-weight: 800;
+      }
+
+      .status-badge.pending {
+        background: rgba(217, 119, 76, 0.12);
+        color: var(--admin-accent-strong);
+      }
+
+      .status-badge.done {
+        background: rgba(45, 125, 115, 0.12);
+        color: var(--admin-secondary);
+      }
+
+      @media (max-width: 900px) {
+        .dashboard-grid,
+        .content-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .content-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 700px) {
+        .admin-item-header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .dashboard-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="admin-shell">
+      <div id="login-view" class="admin-card login-box">
+        <span class="eyebrow">Acesso administrativo</span>
+        <h2>Entrar no painel</h2>
+        <form id="login-form" class="admin-form">
+          <label>
+            Usuário
+            <select id="login-user">
+              <option value="programador">Programador</option>
+              <option value="operadora">Operadora</option>
+            </select>
+          </label>
+
+          <label>
+            Senha
+            <input id="login-password" type="password" placeholder="Digite a senha" />
+          </label>
+
+          <button class="btn btn-primary" type="submit">Entrar</button>
+        </form>
+      </div>
+
+      <div id="admin-view" class="admin-card hidden">
+        <div class="admin-layout">
+          <main class="admin-main">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+              <div>
+                <span class="eyebrow">Painel administrativo</span>
+                <h2>Dashboard da MariaTour</h2>
+              </div>
+              <button id="logout-btn" class="btn btn-secondary" type="button">Sair</button>
+            </div>
+
+            <section id="overview" class="dashboard-grid">
+              <article class="metric-card">
+                <span class="metric-label">Excursões ativas</span>
+                <strong class="metric-value" id="metric-excursions">0</strong>
+                <span class="metric-trend">+12% este mês</span>
+              </article>
+              <article class="metric-card">
+                <span class="metric-label">Orçamentos</span>
+                <strong class="metric-value" id="metric-budget">0</strong>
+                <span class="metric-trend">18 novas</span>
+              </article>
+              <article class="metric-card">
+                <span class="metric-label">Vendas</span>
+                <strong class="metric-value" id="metric-sales">R$ 0</strong>
+                <span class="metric-trend">Meta em progresso</span>
+              </article>
+              <article class="metric-card">
+                <span class="metric-label">Clientes</span>
+                <strong class="metric-value" id="metric-clients">0</strong>
+                <span class="metric-trend">+6 hoje</span>
+              </article>
+            </section>
+
+            <div class="content-grid">
+              <section id="excursions-panel" class="panel-box">
+                <h3>Gerenciar excursões</h3>
+
+                <form id="excursao-form" class="admin-form">
+                  <input type="hidden" id="excursao-id" />
+
+                  <label>
+                    Nome da excursão
+                    <input id="titulo" type="text" placeholder="Ex: Ilha Grande - RJ" required />
+                  </label>
+
+                  <label>
+                    Categoria
+                    <select id="categoria">
+                      <option value="praia">Praia</option>
+                      <option value="cidade">Cidade</option>
+                      <option value="evento">Evento</option>
+                      <option value="familia">Família</option>
+                    </select>
+                  </label>
+
+                  <label>
+                    Descrição
+                    <textarea id="descricao" rows="4" placeholder="Descreva a excursão" required></textarea>
+                  </label>
+
+                  <label>
+                    Duração
+                    <input id="duracao" type="text" placeholder="Ex: 1 dia" required />
+                  </label>
+
+                  <label>
+                    Valor
+                    <input id="preco" type="text" placeholder="Ex: R$ 1.799,00" required />
+                  </label>
+
+                  <label>
+                    Imagem URL
+                    <input id="imagem" type="url" placeholder="https://..." required />
+                  </label>
+
+                  <div class="admin-actions">
+                    <button class="btn btn-primary" type="submit">Salvar excursão</button>
+                    <button id="reset-form-btn" class="btn btn-secondary" type="button">Limpar</button>
+                  </div>
+                </form>
+              </section>
+
+              <aside id="budgets-panel" class="panel-box">
+                <h3>Solicitações de orçamento</h3>
+                <div class="budget-table-wrapper">
+                  <table class="budget-table">
+                    <thead>
+                      <tr>
+                        <th>Nome</th>
+                        <th>E-mail</th>
+                        <th>Telefone</th>
+                        <th>Destino</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody id="budget-table-body"></tbody>
+                  </table>
+                </div>
+              </aside>
+            </div>
+
+            <div class="admin-list" id="admin-list"></div>
+          </main>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const USERS = {
+        programador: '123456',
+        operadora: 'maria123'
+      };
+
+      const API_URL = 'http://localhost:3000/api/excursions';
+      const loginView = document.getElementById('login-view');
+      const adminView = document.getElementById('admin-view');
+      const loginForm = document.getElementById('login-form');
+      const excursaoForm = document.getElementById('excursao-form');
+      const adminList = document.getElementById('admin-list');
+      const logoutBtn = document.getElementById('logout-btn');
+      const budgetTableBody = document.getElementById('budget-table-body');
+
+      const BUDGET_API_URL = 'http://localhost:3000/api/budget-requests';
+
+      const renderBudgetTable = async () => {
+        const response = await fetch(BUDGET_API_URL);
+        const budgetRequests = await response.json();
+
+        budgetTableBody.innerHTML = budgetRequests.map((item) => `
+          <tr>
+            <td>${item.nome}</td>
+            <td>${item.email || '-'}</td>
+            <td>${item.numero || '-'}</td>
+            <td>${item.destino}</td>
+            <td>
+              <button class="status-action ${item.status === 'Respondido' ? 'done' : 'pending'}" type="button" data-id="${item.id}" data-status="${item.status}">
+                ${item.status === 'Respondido' ? 'Respondido' : 'Pendente'}
+              </button>
+            </td>
+          </tr>
+        `).join('');
+
+        document.querySelectorAll('.status-action').forEach((button) => {
+          button.addEventListener('click', async () => {
+            const id = button.dataset.id;
+            const nextStatus = button.dataset.status === 'Pendente' ? 'Respondido' : 'Pendente';
+
+            await fetch(`${BUDGET_API_URL}/${id}`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ status: nextStatus })
+            });
+
+            renderBudgetTable();
+            updateDashboardSummary([]);
+          });
+        });
+      };
+
+      const updateDashboardSummary = (items) => {
+        fetch(BUDGET_API_URL)
+          .then((response) => response.json())
+          .then((budgetRequests) => {
+            document.getElementById('metric-excursions').textContent = items.length;
+            document.getElementById('metric-budget').textContent = budgetRequests.length;
+            document.getElementById('metric-sales').textContent = `R$ ${(items.length * 850).toLocaleString('pt-BR')}`;
+            document.getElementById('metric-clients').textContent = 126;
+          })
+          .catch(() => {
+            document.getElementById('metric-budget').textContent = 0;
+          });
+      };
+
+      const renderList = (items) => {
+        updateDashboardSummary(items);
+
+        adminList.innerHTML = items.map((item) => `
+          <div class="admin-item">
+            <div class="admin-item-header">
+              <h3>${item.titulo}</h3>
+              <div class="admin-actions">
+                <button class="btn btn-secondary" data-edit="${item.id}" type="button">Editar</button>
+                <button class="btn btn-primary" data-delete="${item.id}" type="button">Excluir</button>
+              </div>
+            </div>
+            <p class="muted">${item.categoria} · ${item.duracao}</p>
+            <p>${item.descricao}</p>
+            <p><strong>${item.preco}</strong></p>
+          </div>
+        `).join('');
+
+        document.querySelectorAll('[data-edit]').forEach((button) => {
+          button.addEventListener('click', () => {
+            const item = items.find((exc) => exc.id === button.dataset.edit);
+            if (!item) return;
+            document.getElementById('excursao-id').value = item.id;
+            document.getElementById('titulo').value = item.titulo;
+            document.getElementById('categoria').value = item.categoria;
+            document.getElementById('descricao').value = item.descricao;
+            document.getElementById('duracao').value = item.duracao;
+            document.getElementById('preco').value = item.preco;
+            document.getElementById('imagem').value = item.imagem;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          });
+        });
+
+        document.querySelectorAll('[data-delete]').forEach((button) => {
+          button.addEventListener('click', async () => {
+            await fetch(`${API_URL}/${button.dataset.delete}`, { method: 'DELETE' });
+            loadExcursions();
+          });
+        });
+      };
+
+      const loadExcursions = async () => {
+        const response = await fetch(API_URL);
+        const items = await response.json();
+        renderList(items);
+      };
+
+      renderBudgetTable();
+
+      const login = () => {
+        const user = document.getElementById('login-user').value;
+        const password = document.getElementById('login-password').value;
+
+        if (USERS[user] && USERS[user] === password) {
+          localStorage.setItem('mariatour_user', user);
+          loginView.classList.add('hidden');
+          adminView.classList.remove('hidden');
+          loadExcursions();
+          renderBudgetTable();
+          return;
+        }
+
+        alert('Usuário ou senha inválidos.');
+      };
+
+      loginForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        login();
+      });
+
+      logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('mariatour_user');
+        adminView.classList.add('hidden');
+        loginView.classList.remove('hidden');
+        document.getElementById('login-password').value = '';
+      });
+
+      excursaoForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const id = document.getElementById('excursao-id').value || `${Date.now()}`;
+        const payload = {
+          id,
+          titulo: document.getElementById('titulo').value,
+          categoria: document.getElementById('categoria').value,
+          descricao: document.getElementById('descricao').value,
+          duracao: document.getElementById('duracao').value,
+          preco: document.getElementById('preco').value,
+          imagem: document.getElementById('imagem').value,
+          link: `passeio.html?id=${encodeURIComponent(id)}`
+        };
+
+        const method = document.getElementById('excursao-id').value ? 'PUT' : 'POST';
+        const url = document.getElementById('excursao-id').value ? `${API_URL}/${id}` : API_URL;
+
+        await fetch(url, {
+          method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        loadExcursions();
+        excursaoForm.reset();
+        document.getElementById('excursao-id').value = '';
+      });
+
+      document.getElementById('reset-form-btn').addEventListener('click', () => {
+        excursaoForm.reset();
+        document.getElementById('excursao-id').value = '';
+      });
+
+      const userStored = localStorage.getItem('mariatour_user');
+      if (userStored && USERS[userStored]) {
+        loginView.classList.add('hidden');
+        adminView.classList.remove('hidden');
+        loadExcursions();
+        renderBudgetTable();
+      }
+    </script>
+  </body>
+</html>

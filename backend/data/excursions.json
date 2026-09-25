@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ilha-grande",
+    "titulo": "Ilha Grande",
+    "categoria": "praia",
+    "descricao": "Uma experiência de praia, mar cristalino e paisagens incríveis para relaxar e aproveitar o litoral.",
+    "duracao": "1 dia",
+    "preco": "R$ 1.799,00",
+    "imagem": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80",
+    "link": "passeio.html?id=ilha-grande"
+  },
+  {
+    "id": "petropolis",
+    "titulo": "Petrópolis",
+    "categoria": "cidade",
+    "descricao": "Visite a cidade imperial com clima agradável, natureza e pontos turísticos encantadores.",
+    "duracao": "1 dia",
+    "preco": "R$ 350,00",
+    "imagem": "https://images.unsplash.com/photo-1521295121783-8a321d551ad2?auto=format&fit=crop&w=900&q=80",
+    "link": "petropolis.html"
+  },
+  {
+    "id": "show-luan",
+    "titulo": "Bate e volta - Luan Santana",
+    "categoria": "evento",
+    "descricao": "Uma viagem prática e segura para curtir o show do Luan Santana em Cariacica - ES.",
+    "duracao": "1 noite",
+    "preco": "R$ 120,00",
+    "imagem": "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=900&q=80",
+    "link": "show-luan.html"
+  },
+  {
+    "id": "dia-das-criancas",
+    "titulo": "Bate e volta - Dia das Crianças",
+    "categoria": "familia",
+    "descricao": "Uma programação divertida e segura para crianças e famílias aproveitarem o Dia das Crianças com alegria.",
+    "duracao": "1 dia",
+    "preco": "adulto R$ 259,90",
+    "imagem": "https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=900&q=80",
+    "link": "dia-das-criancas.html"
+  }
+]

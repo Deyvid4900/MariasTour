@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MariaTour | Viagens que transformam</title>
+    <title>MariasTour | Viagens que transformam</title>
     <meta
       name="description"
-      content="MariaTour é uma agência de turismo pensada para experiências memoráveis, destinos incríveis e viagens com conforto e autenticidade."
+      content="MariasTour é uma agência de turismo pensada para experiências memoráveis, destinos incríveis e viagens com conforto e autenticidade."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -19,9 +19,9 @@
   <body>
     <header class="site-header">
       <div class="container nav-wrap">
-        <a href="#top" class="brand" aria-label="MariaTour home">
+        <a href="#top" class="brand" aria-label="MariasTour home">
           <span class="brand-mark">M</span>
-          <span>MariaTour</span>
+          <span>MariasTour</span>
         </a>
 
         <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false">
@@ -35,6 +35,7 @@
           <a href="#experiencias">Experiências</a>
           <a href="#depoimentos">Depoimentos</a>
           <a href="#contato">Contato</a>
+          <a href="admin/">Admin</a>
         </nav>
 
         <a class="btn btn-primary nav-cta" href="#contato">Reservar agora</a>
@@ -45,32 +46,32 @@
       <section class="hero">
         <div class="container hero-grid">
           <div class="hero-copy">
-            <span class="eyebrow">Sua próxima história começa aqui</span>
-            <h1>Viagens que inspiram, conectam e transformam.</h1>
+            <span class="eyebrow">Sua próxima diversão começa aqui</span>
+            <h1>Excursões incríveis para você viver momentos especiais.</h1>
             <p>
-              Descubra destinos inesquecíveis com roteiros cuidadosamente planejados,
-              atendimento premium e experiências autênticas ao redor do mundo.
+              A MariasTour organiza viagens e passeios para você e sua familia. Lugares, shows e eventos em grupo,
+              com conforto, organização e atendimento pensado para toda a família.
             </p>
 
             <div class="hero-actions">
-              <a class="btn btn-primary" href="#destinos">Explorar pacotes</a>
+              <a class="btn btn-primary" href="#destinos">Ver excursões</a>
               <a class="btn btn-secondary" href="#experiencias">Como funciona</a>
             </div>
 
-            <ul class="hero-trust" aria-label="Benefícios da MariaTour">
-              <li>+12 mil viajantes</li>
-              <li>Atendimento 24/7</li>
-              <li>Suporte local</li>
+            <ul class="hero-trust" aria-label="Benefícios da MariasTour">
+              <li>Saídas móveis e seguras</li>
+              <li>Grupo com atenção total</li>
+              <li>Experiências inesquecíveis</li>
             </ul>
           </div>
 
           <div class="hero-visual" aria-label="Imagem de viagem">
             <div class="booking-card">
-              <p class="booking-label">Pacote mais procurado</p>
-              <h3>Bahamas & Miami</h3>
+              <p class="booking-label">Mais pedido</p>
+              <h3>Ilha Grande + passeio</h3>
               <div class="booking-meta">
-                <span>7 dias</span>
-                <span>R$ 3.980</span>
+                <span>3 dia</span>
+                <span>R$ 1.799,00</span>
               </div>
               <div class="booking-rating">
                 <span>★★★★★</span>
@@ -87,8 +88,8 @@
             <div class="floating-card floating-card--bottom">
               <span>✈️</span>
               <div>
-                <strong>Tour guiado</strong>
-                <small>Inclui traslados</small>
+                <strong>+200</strong>
+                <small>pessoas atendidas</small>
               </div>
             </div>
           </div>
@@ -98,20 +99,20 @@
       <section class="stats">
         <div class="container stats-grid">
           <article>
-            <strong>35+</strong>
-            <span>destinos</span>
+            <strong>4</strong>
+            <span>excursões especiais</span>
           </article>
           <article>
-            <strong>98%</strong>
-            <span>clientes satisfeitos</span>
+            <strong>100%</strong>
+            <span>organização em grupo</span>
           </article>
           <article>
-            <strong>150+</strong>
-            <span>roteiros exclusivos</span>
+            <strong>+200</strong>
+            <span>pessoas atendidas</span>
           </article>
           <article>
             <strong>24/7</strong>
-            <span>suporte ao viajante</span>
+            <span>atendimento ao cliente</span>
           </article>
         </div>
       </section>
@@ -119,92 +120,72 @@
       <section id="destinos" class="section">
         <div class="container">
           <div class="section-heading">
-            <span class="eyebrow">Destinos em destaque</span>
-            <h2>Escolha a viagem da sua essência</h2>
+            <span class="eyebrow">Nossas excursões</span>
+            <h2>Escolha seu passeio favorito</h2>
           </div>
 
           <div class="filter-bar" aria-label="Filtro de destinos">
             <button class="filter-btn active" data-filter="all">Todos</button>
             <button class="filter-btn" data-filter="praia">Praia</button>
             <button class="filter-btn" data-filter="cidade">Cidade</button>
-            <button class="filter-btn" data-filter="natureza">Natureza</button>
+            <button class="filter-btn" data-filter="evento">Evento</button>
+            <button class="filter-btn" data-filter="familia">Família</button>
           </div>
 
-          <div class="tour-grid">
-            <article class="tour-card" data-category="praia">
-              <img
-                src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80"
-                alt="Praia paradisíaca"
-              />
-              <div class="tour-body">
-                <div class="tour-tag">Praia</div>
-                <h3>Bali, Indonésia</h3>
-                <p>Relaxe em praias de areia branca e descubra templos, culinária e paisagens incríveis.</p>
-                <div class="tour-meta">
-                  <span>8 dias</span>
-                  <span>R$ 4.600</span>
-                </div>
-              </div>
-            </article>
-
-            <article class="tour-card" data-category="cidade">
-              <img
-                src="https://images.unsplash.com/photo-1499856871958-5b9627545d1a?auto=format&fit=crop&w=900&q=80"
-                alt="Cidade de Paris"
-              />
-              <div class="tour-body">
-                <div class="tour-tag">Cidade</div>
-                <h3>Paris, França</h3>
-                <p>Arte, moda e cultura em uma experiência elegante para casais e apaixonados por turismo.</p>
-                <div class="tour-meta">
-                  <span>6 dias</span>
-                  <span>R$ 5.200</span>
-                </div>
-              </div>
-            </article>
-
-            <article class="tour-card" data-category="natureza">
-              <img
-                src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=900&q=80"
-                alt="Paisagem de montanha"
-              />
-              <div class="tour-body">
-                <div class="tour-tag">Natureza</div>
-                <h3>Patagônia, Chile</h3>
-                <p>Experiências ao ar livre, trilhas extremas e paisagens grandiosas para aventureiros.</p>
-                <div class="tour-meta">
-                  <span>10 dias</span>
-                  <span>R$ 6.980</span>
-                </div>
-              </div>
-            </article>
-          </div>
+          <div id="tour-list" class="tour-grid"></div>
         </div>
       </section>
 
       <section id="experiencias" class="section section-muted">
         <div class="container">
           <div class="section-heading">
-            <span class="eyebrow">Por que escolher a MariaTour</span>
-            <h2>Experiências planejadas para cada tipo de viajante</h2>
+            <span class="eyebrow">Por que escolher a MariasTour</span>
+            <h2>Organização para cada tipo de passeio</h2>
           </div>
 
           <div class="feature-grid">
             <article class="feature-card">
-              <div class="icon">🧭</div>
-              <h3>Roteiros personalizados</h3>
-              <p>Organizamos cada detalhe com foco na sua rotina, estilo e objetivos de viagem.</p>
+              <div class="icon">🚌</div>
+              <h3>Transporte confortável</h3>
+              <p>Saídas bem planejadas, horários organizados e uma viagem tranquila do início ao fim.</p>
             </article>
             <article class="feature-card">
-              <div class="icon">🏨</div>
-              <h3>Hospedagens premium</h3>
-              <p>Seleção cuidadosa de hotéis, pousadas e acomodações em locais estratégicos.</p>
+              <div class="icon">🎟️</div>
+              <h3>Eventos e experiências</h3>
+              <p>Atendimento para shows, viagens em grupo e programações especiais com muita diversão.</p>
             </article>
             <article class="feature-card">
               <div class="icon">🤝</div>
               <h3>Atendimento humanizado</h3>
-              <p>Você conta com suporte antes, durante e depois de cada viagem para total tranquilidade.</p>
+              <p>Você conta com apoio completo antes, durante e depois da excursão, com atenção real.</p>
             </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="galeria" class="section">
+        <div class="container">
+          <div class="section-heading">
+            <span class="eyebrow">Galeria</span>
+            <h2>Momentos que fazem você querer viajar</h2>
+          </div>
+
+          <div class="gallery-grid">
+            <figure class="gallery-item gallery-item--large">
+              <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80" alt="Praia paradisíaca" />
+            </figure>
+            <figure class="gallery-item">
+              <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=900&q=80" alt="Montanha e natureza" />
+            </figure>
+            <figure class="gallery-item">
+              <img src="https://images.unsplash.com/photo-1499856871958-5b9627545d1a?auto=format&fit=crop&w=900&q=80" alt="Cidade europeia" />
+            </figure>
+            <figure class="gallery-item">
+              <img src="https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=900&q=80" alt="Passeio de barco" />
+            </figure>
+            <figure class="gallery-item">
+              <img src="https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=900&q=80" alt="Destino tropical em vista panorâmica" />
+            </figure>
           </div>
         </div>
       </section>
@@ -213,7 +194,7 @@
         <div class="container itinerary-grid">
           <div>
             <span class="eyebrow">Como funciona</span>
-            <h2>Em 3 etapas simples, você vive sua melhor viagem</h2>
+            <h2>Em etapas simples, você vive sua melhor viagem</h2>
           </div>
 
           <div class="steps">
@@ -221,20 +202,14 @@
               <span>01</span>
               <div>
                 <h3>Defina seu estilo</h3>
-                <p>Selecionamos destinos, clima e aventura de acordo com seu perfil.</p>
+                <p>Destinos, clima e aventura de acordo com seu perfil.</p>
               </div>
             </div>
+            
             <div class="step-item">
               <span>02</span>
               <div>
-                <h3>Personalize seu pacote</h3>
-                <p>Você escolhe hotéis, atividades e noites especiais para sua experiência.</p>
-              </div>
-            </div>
-            <div class="step-item">
-              <span>03</span>
-              <div>
-                <h3>Voe com segurança</h3>
+                <h3>Viage com segurança</h3>
                 <p>Somos sua equipe de apoio durante toda a jornada, com atenção constante.</p>
               </div>
             </div>
@@ -265,7 +240,7 @@
               </footer>
             </blockquote>
             <blockquote class="quote-card">
-              “A MariaTour transformou nossa viagem em uma memória incrível, com roteiros e dicas que fizeram a diferença.”
+              “A MariasTour transformou nossa viagem em uma memória incrível, com roteiros e dicas que fizeram a diferença.”
               <footer>
                 <strong>Fernanda & João</strong>
                 <span>Bali</span>
@@ -279,7 +254,7 @@
         <div class="container contact-grid">
           <div class="contact-copy">
             <span class="eyebrow">Vamos planejar sua aventura</span>
-            <h2>Fale com a MariaTour e comece sua próxima viagem.</h2>
+            <h2>Fale com a MariasTour e comece sua próxima viagem.</h2>
             <p>
               Preencha o formulário e nossa equipe entrará em contato com um roteiro inicial pensado para você.
             </p>
@@ -293,6 +268,10 @@
             <label>
               E-mail
               <input type="email" placeholder="seu@email.com" />
+            </label>
+            <label>
+              Número de WhatsApp
+              <input type="tel" placeholder="(xx) xxxxx-xxxx" />
             </label>
             <label>
               Destino de interesse
@@ -315,10 +294,10 @@
         <div>
           <a href="#top" class="brand brand-footer">
             <span class="brand-mark">M</span>
-            <span>MariaTour</span>
+            <span>MariasTour</span>
           </a>
         </div>
-        <p>© <span id="year"></span> MariaTour. Todos os direitos reservados.</p>
+        <p>© <span id="year"></span> MariasTour. Todos os direitos reservados.</p>
         <div class="socials" aria-label="Redes sociais">
           <a href="#" aria-label="Instagram">Instagram</a>
           <a href="#" aria-label="Facebook">Facebook</a>
