@@ -279,13 +279,197 @@
       }
 
       @media (max-width: 700px) {
+        .admin-shell {
+          padding: 12px 0 36px;
+        }
+
+        .admin-card {
+          width: calc(100% - 20px);
+          padding: 16px 14px;
+          border-radius: 18px;
+        }
+
+        .login-box {
+          margin: 10vh auto;
+        }
+
+        .admin-layout {
+          min-height: 0;
+          gap: 18px;
+        }
+
+        .admin-main {
+          gap: 18px;
+        }
+
+        .admin-header h2 {
+          margin-bottom: 0;
+          font-size: 1.65rem;
+        }
+
+        .admin-header .btn {
+          min-height: 44px;
+          padding: 0.65rem 1rem;
+        }
+
+        .dashboard-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 10px;
+        }
+
+        .metric-card {
+          min-width: 0;
+          padding: 14px 12px;
+          border-radius: 14px;
+        }
+
+        .metric-label {
+          font-size: 0.68rem;
+          letter-spacing: 0.05em;
+        }
+
+        .metric-value {
+          margin-top: 5px;
+          font-size: 1.65rem;
+        }
+
+        .metric-trend {
+          font-size: 0.68rem;
+          padding: 0.3rem 0.5rem;
+        }
+
+        .content-grid {
+          gap: 14px;
+        }
+
+        .panel-box {
+          min-width: 0;
+          padding: 17px 14px;
+          border-radius: 16px;
+        }
+
+        .panel-box h3 {
+          margin-bottom: 12px;
+        }
+
+        .admin-form {
+          gap: 14px;
+          margin-top: 16px;
+        }
+
+        .login-box input,
+        .login-box select,
+        .admin-form input,
+        .admin-form textarea,
+        .admin-form select {
+          min-height: 48px;
+          padding: 0.8rem 0.85rem;
+          font-size: 16px;
+        }
+
+        .admin-form textarea {
+          min-height: 112px;
+        }
+
+        .admin-actions {
+          gap: 8px;
+          margin-top: 8px;
+        }
+
+        .admin-form .admin-actions {
+          flex-direction: column;
+        }
+
+        .admin-actions .btn {
+          min-height: 48px;
+        }
+
         .admin-item-header {
           flex-direction: column;
           align-items: flex-start;
         }
 
-        .dashboard-grid {
-          grid-template-columns: 1fr;
+        .admin-item {
+          padding: 15px;
+          border-radius: 14px;
+        }
+
+        .admin-item-header .admin-actions {
+          width: 100%;
+          flex-direction: row;
+        }
+
+        .admin-item-header .admin-actions .btn {
+          min-height: 44px;
+          flex: 1;
+          padding: 0.65rem 0.5rem;
+        }
+
+        .budget-table-wrapper {
+          overflow: visible;
+        }
+
+        .budget-table,
+        .budget-table tbody {
+          display: block;
+          width: 100%;
+          background: transparent;
+        }
+
+        .budget-table thead {
+          position: absolute;
+          width: 1px;
+          height: 1px;
+          padding: 0;
+          margin: -1px;
+          overflow: hidden;
+          clip: rect(0, 0, 0, 0);
+          white-space: nowrap;
+          border: 0;
+        }
+
+        .budget-table tbody tr {
+          display: block;
+          margin-top: 12px;
+          padding: 4px 14px;
+          border: 1px solid var(--admin-border);
+          border-radius: 14px;
+          background: white;
+        }
+
+        .budget-table td {
+          display: grid;
+          grid-template-columns: minmax(76px, 0.65fr) minmax(0, 1fr);
+          align-items: center;
+          gap: 10px;
+          padding: 11px 0;
+          border-bottom: 1px solid var(--admin-border);
+          overflow-wrap: anywhere;
+        }
+
+        .budget-table td::before {
+          content: attr(data-label);
+          color: var(--admin-muted);
+          font-size: 0.68rem;
+          font-weight: 800;
+          text-transform: uppercase;
+        }
+
+        .budget-table td:last-child {
+          border-bottom: 0;
+        }
+
+        .status-action {
+          min-height: 44px;
+          min-width: 112px;
+          border-radius: 12px;
+        }
+      }
+
+      @media (max-width: 380px) {
+        .budget-table td {
+          grid-template-columns: 72px minmax(0, 1fr);
+          gap: 8px;
         }
       }
     </style>
@@ -316,7 +500,7 @@
       <div id="admin-view" class="admin-card hidden">
         <div class="admin-layout">
           <main class="admin-main">
-            <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+            <div class="admin-header" style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
               <div>
                 <span class="eyebrow">Painel administrativo</span>
                 <h2>Dashboard da MariaTour</h2>
@@ -444,10 +628,10 @@
 
         budgetTableBody.innerHTML = budgetRequests.map((item) => `
           <tr>
-            <td>${item.nome}</td>
-            <td>${item.email || '-'}</td>
-            <td>${item.numero || '-'}</td>
-            <td>${item.destino}</td>
+            <td data-label="Nome">${item.nome}</td>
+            <td data-label="E-mail">${item.email || '-'}</td>
+            <td data-label="Telefone">${item.numero || '-'}</td>
+            <td data-label="Destino">${item.destino}</td>
             <td>
               <button class="status-action ${item.status === 'Respondido' ? 'done' : 'pending'}" type="button" data-id="${item.id}" data-status="${item.status}">
                 ${item.status === 'Respondido' ? 'Respondido' : 'Pendente'}

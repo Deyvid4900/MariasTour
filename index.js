@@ -5,8 +5,8 @@ const filterButtons = document.querySelectorAll('.filter-btn');
 const contactForm = document.querySelector('.contact-form');
 const homeList = document.getElementById('tour-list');
 const tourDetail = document.getElementById('tour-detail');
-const API_URL = 'http://localhost:3000/api/excursions';
-const BUDGET_API_URL = 'http://localhost:3000/api/budget-requests';
+const API_URL = 'https://mariastour-production.up.railway.app/api/excursions';
+const BUDGET_API_URL = 'https://mariastour-production.up.railway.app/api/budget-requests';
 
 if (yearEl) {
   yearEl.textContent = new Date().getFullYear();
