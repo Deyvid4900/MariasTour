@@ -196,6 +196,14 @@
         overflow-x: auto;
       }
 
+      .budget-contact {
+        color: var(--admin-secondary);
+        font-weight: 700;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+        overflow-wrap: anywhere;
+      }
+
       .budget-table {
         width: 100%;
         border-collapse: collapse;
@@ -340,6 +348,10 @@
 
         .content-grid {
           gap: 14px;
+        }
+
+        #budgets-panel {
+          order: -1;
         }
 
         .panel-box {
@@ -621,6 +633,13 @@
       const budgetTableBody = document.getElementById('budget-table-body');
 
       const BUDGET_API_URL = 'http://localhost:3000/api/budget-requests';
+      const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (character) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      })[character]);
 
       const renderBudgetTable = async () => {
         const response = await fetch(BUDGET_API_URL);
@@ -628,11 +647,11 @@
 
         budgetTableBody.innerHTML = budgetRequests.map((item) => `
           <tr>
-            <td data-label="Nome">${item.nome}</td>
-            <td data-label="E-mail">${item.email || '-'}</td>
-            <td data-label="Telefone">${item.numero || '-'}</td>
-            <td data-label="Destino">${item.destino}</td>
-            <td>
+            <td data-label="Nome">${escapeHtml(item.nome)}</td>
+            <td data-label="E-mail">${item.email ? `<a class="budget-contact" href="mailto:${encodeURIComponent(item.email).replace(/%40/gi, '@')}">${escapeHtml(item.email)}</a>` : '-'}</td>
+            <td data-label="Telefone">${item.numero ? `<a class="budget-contact" href="tel:${item.numero.replace(/[^\d+]/g, '')}">${escapeHtml(item.numero)}</a>` : '-'}</td>
+            <td data-label="Destino">${escapeHtml(item.destino)}</td>
+            <td data-label="Status">
               <button class="status-action ${item.status === 'Respondido' ? 'done' : 'pending'}" type="button" data-id="${item.id}" data-status="${item.status}">
                 ${item.status === 'Respondido' ? 'Respondido' : 'Pendente'}
               </button>
