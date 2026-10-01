@@ -121,6 +121,9 @@ app.get('/api/excursions', (req, res) => {
 app.post('/api/excursions', (req, res) => {
   const payload = req.body;
   const excursions = readExcursions();
+  const images = Array.isArray(payload.imagens)
+    ? payload.imagens.filter((image) => typeof image === 'string' && image.trim())
+    : payload.imagem ? [payload.imagem] : [];
 
   const newItem = {
     id: payload.id || cryptoRandomId(),
@@ -129,7 +132,8 @@ app.post('/api/excursions', (req, res) => {
     descricao: payload.descricao,
     duracao: payload.duracao,
     preco: payload.preco,
-    imagem: payload.imagem,
+    imagem: images[0] || '',
+    imagens: images,
     link: payload.link || `passeio.html?id=${encodeURIComponent(payload.id || cryptoRandomId())}`
   };
 

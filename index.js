@@ -31,7 +31,7 @@ const renderTours = (items) => {
 
   homeList.innerHTML = items.map((item) => `
     <article class="tour-card" data-category="${item.categoria}">
-      <img src="${item.imagem}" alt="${item.titulo}" />
+      <img src="${item.imagens?.[0] || item.imagem}" alt="${item.titulo}" />
       <div class="tour-body">
         <div class="tour-tag">${item.categoria}</div>
         <h3>${item.titulo}</h3>
@@ -98,9 +98,35 @@ const loadTourDetail = async () => {
     document.getElementById('tour-price').textContent = item.preco;
     document.getElementById('tour-duration').textContent = item.duracao;
 
+    const images = Array.isArray(item.imagens) && item.imagens.length
+      ? item.imagens
+      : item.imagem ? [item.imagem] : [];
     const image = document.getElementById('tour-image');
-    image.src = item.imagem;
+    image.src = images[0] || '';
     image.alt = item.titulo;
+
+    const gallerySection = document.getElementById('tour-gallery-section');
+    const gallery = document.getElementById('tour-gallery');
+    gallery.replaceChildren();
+
+    images.slice(1).forEach((imageUrl, index) => {
+      const thumbnail = document.createElement('button');
+      thumbnail.className = 'tour-gallery-item';
+      thumbnail.type = 'button';
+      thumbnail.setAttribute('aria-label', `Ver foto ${index + 2} de ${item.titulo}`);
+
+      const thumbnailImage = document.createElement('img');
+      thumbnailImage.src = imageUrl;
+      thumbnailImage.alt = `${item.titulo}, foto ${index + 2}`;
+      thumbnail.append(thumbnailImage);
+      thumbnail.addEventListener('click', () => {
+        image.src = imageUrl;
+        image.alt = thumbnailImage.alt;
+      });
+      gallery.append(thumbnail);
+    });
+
+    gallerySection.classList.toggle('hidden', images.length < 2);
 
     loading.classList.add('hidden');
     content.classList.remove('hidden');

@@ -41,6 +41,11 @@
       }
       .page-hero-overlay h1 { margin: 8px 0; }
       .page-content { padding: 24px 0 90px; }
+      .tour-gallery-section { padding: 0 0 28px; }
+      .tour-gallery { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+      .tour-gallery-item { aspect-ratio: 4 / 3; padding: 0; overflow: hidden; border: 0; border-radius: 12px; background: #253b3d; cursor: pointer; }
+      .tour-gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.2s ease; }
+      .tour-gallery-item:hover img { transform: scale(1.04); }
       .destination-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 28px; }
       .info-card, .package-card {
         padding: 26px;
@@ -72,12 +77,14 @@
       @media (max-width: 900px) {
         .destination-grid { grid-template-columns: 1fr; }
         .page-hero-card { min-height: 380px; }
+        .tour-gallery { grid-template-columns: repeat(3, minmax(0, 1fr)); }
       }
       @media (max-width: 600px) {
         .page-hero { padding-top: 36px; }
         .page-hero-card { min-height: 320px; border-radius: 20px; }
         .page-hero-overlay { padding: 28px 20px; }
         .info-card, .package-card { padding: 20px; }
+        .tour-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
       }
     </style>
   </head>
@@ -119,6 +126,10 @@
               </div>
             </div>
           </div>
+        </section>
+
+        <section id="tour-gallery-section" class="container tour-gallery-section hidden" aria-label="Fotos do passeio">
+          <div id="tour-gallery" class="tour-gallery"></div>
         </section>
 
         <section class="page-content">

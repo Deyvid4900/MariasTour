@@ -74,6 +74,73 @@
         font-weight: 600;
       }
 
+      .image-manager {
+        display: grid;
+        gap: 12px;
+        min-width: 0;
+        margin: 0;
+        padding: 14px;
+        border: 1px solid var(--admin-border);
+        border-radius: 14px;
+      }
+
+      .image-manager legend {
+        padding: 0 6px;
+        color: var(--admin-text);
+        font-weight: 800;
+      }
+
+      .image-manager-note {
+        margin: 0;
+        color: var(--admin-muted);
+        font-size: 0.88rem;
+      }
+
+      .excursion-image-list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .excursion-image-entry {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 76px auto;
+        align-items: end;
+        gap: 10px;
+      }
+
+      .excursion-image-entry label {
+        min-width: 0;
+      }
+
+      .excursion-image-entry input {
+        width: 100%;
+      }
+
+      .excursion-image-preview {
+        width: 76px;
+        height: 58px;
+        border: 1px solid var(--admin-border);
+        border-radius: 8px;
+        background: var(--admin-panel-soft);
+        object-fit: cover;
+      }
+
+      .excursion-image-preview[hidden] {
+        display: none;
+      }
+
+      .remove-image-btn {
+        min-height: 44px;
+        padding: 0.55rem 0.8rem;
+        border: 1px solid var(--admin-border);
+        border-radius: 10px;
+        background: #fff;
+        color: var(--admin-accent-strong);
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
       .admin-actions {
         display: flex;
         flex-wrap: wrap;
@@ -83,14 +150,144 @@
 
       .admin-layout {
         display: grid;
-        grid-template-columns: 1fr;
+        grid-template-columns: 228px minmax(0, 1fr);
+        align-items: start;
         gap: 24px;
-        min-height: 760px;
+        min-height: 0;
+      }
+
+      .admin-sidebar {
+        position: sticky;
+        top: 20px;
+        display: grid;
+        gap: 22px;
+        align-self: start;
+        padding: 20px 14px;
+        border: 1px solid var(--admin-border);
+        border-radius: 18px;
+        background: linear-gradient(180deg, #fffaf5 0%, #fff 100%);
+      }
+
+      .sidebar-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0 6px;
+        color: var(--admin-text);
+        font-weight: 800;
+      }
+
+      .sidebar-brand-mark {
+        display: grid;
+        width: 36px;
+        height: 36px;
+        place-items: center;
+        border-radius: 11px;
+        background: linear-gradient(135deg, var(--admin-accent), #f7b08e);
+        color: #fff;
+      }
+
+      .sidebar-nav {
+        display: grid;
+        gap: 6px;
+      }
+
+      .sidebar-link {
+        min-height: 46px;
+        padding: 0.7rem 0.85rem;
+        border: 0;
+        border-radius: 10px;
+        background: transparent;
+        color: var(--admin-muted);
+        font: inherit;
+        font-weight: 700;
+        text-align: left;
+        cursor: pointer;
+      }
+
+      .sidebar-link:hover,
+      .sidebar-link.active {
+        background: rgba(217, 119, 76, 0.1);
+        color: var(--admin-accent-strong);
       }
 
       .admin-main {
         display: grid;
         gap: 24px;
+        min-width: 0;
+      }
+
+      .admin-view {
+        display: grid;
+        gap: 20px;
+        min-width: 0;
+      }
+
+      .view-heading h2 {
+        margin-bottom: 4px;
+        font-size: 1.6rem;
+      }
+
+      .view-heading p {
+        margin-bottom: 0;
+      }
+
+      .recent-requests-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .recent-request {
+        display: grid;
+        grid-template-columns: minmax(140px, 0.85fr) minmax(0, 1.4fr) auto;
+        align-items: center;
+        gap: 16px;
+        padding: 15px 16px;
+        border: 1px solid var(--admin-border);
+        border-radius: 14px;
+        background: linear-gradient(180deg, #fffaf5 0%, #fff 100%);
+      }
+
+      .recent-request-person {
+        display: grid;
+        gap: 3px;
+        min-width: 0;
+      }
+
+      .recent-request-person strong,
+      .recent-request-contact a {
+        overflow-wrap: anywhere;
+      }
+
+      .recent-request-destination {
+        color: var(--admin-muted);
+        font-size: 0.88rem;
+      }
+
+      .recent-request-contact {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px 16px;
+        min-width: 0;
+      }
+
+      .recent-request-status {
+        justify-self: end;
+        padding: 0.35rem 0.65rem;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      .recent-request-status.pending {
+        background: rgba(217, 119, 76, 0.12);
+        color: var(--admin-accent-strong);
+      }
+
+      .recent-request-status.done {
+        background: var(--admin-secondary-soft);
+        color: var(--admin-secondary);
       }
 
       .dashboard-grid {
@@ -276,6 +473,26 @@
       }
 
       @media (max-width: 900px) {
+        .admin-layout {
+          grid-template-columns: 1fr;
+          gap: 18px;
+        }
+
+        .admin-sidebar {
+          position: static;
+          gap: 12px;
+          padding: 14px;
+        }
+
+        .sidebar-nav {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+
+        .sidebar-link {
+          padding-inline: 0.6rem;
+          text-align: center;
+        }
+
         .dashboard-grid,
         .content-grid {
           grid-template-columns: 1fr 1fr;
@@ -286,7 +503,7 @@
         }
       }
 
-      @media (max-width: 700px) {
+      @media (max-width: 900px) {
         .admin-shell {
           padding: 12px 0 36px;
         }
@@ -318,6 +535,24 @@
         .admin-header .btn {
           min-height: 44px;
           padding: 0.65rem 1rem;
+        }
+
+        .recent-request {
+          grid-template-columns: minmax(0, 1fr) auto;
+          gap: 10px 12px;
+          padding: 13px;
+        }
+
+        .recent-request-contact {
+          grid-column: 1 / -1;
+          grid-row: 2;
+          flex-direction: column;
+          gap: 4px;
+        }
+
+        .recent-request-status {
+          grid-column: 2;
+          grid-row: 1;
         }
 
         .dashboard-grid {
@@ -381,6 +616,28 @@
 
         .admin-form textarea {
           min-height: 112px;
+        }
+
+        .excursion-image-entry {
+          grid-template-columns: minmax(0, 1fr) 60px;
+          align-items: end;
+        }
+
+        .excursion-image-entry label {
+          grid-column: 1 / -1;
+        }
+
+        .excursion-image-preview {
+          grid-column: 1;
+          width: 60px;
+          height: 52px;
+        }
+
+        .remove-image-btn {
+          grid-column: 2;
+          width: 100%;
+          min-height: 44px;
+          padding: 0.5rem;
         }
 
         .admin-actions {
@@ -478,7 +735,17 @@
         }
       }
 
+      @media (max-width: 700px) {
+        .sidebar-nav {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
       @media (max-width: 380px) {
+        .sidebar-nav {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
         .budget-table td {
           grid-template-columns: 72px minmax(0, 1fr);
           gap: 8px;
@@ -511,16 +778,43 @@
 
       <div id="admin-view" class="admin-card hidden">
         <div class="admin-layout">
+          <aside class="admin-sidebar">
+            <div class="sidebar-brand">
+              <span class="sidebar-brand-mark">M</span>
+              <span>MariaTour</span>
+            </div>
+            <nav id="admin-navigation" class="sidebar-nav" aria-label="Seções administrativas">
+              <button class="sidebar-link active" type="button" data-admin-view="home" aria-current="page">Início</button>
+              <button class="sidebar-link" type="button" data-admin-view="dashboard">Dashboard</button>
+              <button class="sidebar-link" type="button" data-admin-view="excursions">Excursões</button>
+              <button class="sidebar-link" type="button" data-admin-view="budgets">Orçamentos</button>
+            </nav>
+          </aside>
+
           <main class="admin-main">
-            <div class="admin-header" style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+            <header class="admin-header" style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
               <div>
                 <span class="eyebrow">Painel administrativo</span>
-                <h2>Dashboard da MariaTour</h2>
+                <h2>MariaTour</h2>
               </div>
               <button id="logout-btn" class="btn btn-secondary" type="button">Sair</button>
-            </div>
+            </header>
 
-            <section id="overview" class="dashboard-grid">
+            <section id="home-view" class="admin-view" data-admin-section>
+              <div class="view-heading">
+                <span class="eyebrow">Visão geral</span>
+                <h2>Solicitações recentes</h2>
+                <p>Os cinco últimos clientes que pediram um orçamento.</p>
+              </div>
+              <div id="recent-requests-list" class="recent-requests-list"></div>
+            </section>
+
+            <section id="dashboard-view" class="admin-view hidden" data-admin-section>
+              <div class="view-heading">
+                <span class="eyebrow">Resumo</span>
+                <h2>Dashboard</h2>
+              </div>
+              <div id="overview" class="dashboard-grid">
               <article class="metric-card">
                 <span class="metric-label">Excursões ativas</span>
                 <strong class="metric-value" id="metric-excursions">0</strong>
@@ -541,11 +835,16 @@
                 <strong class="metric-value" id="metric-clients">0</strong>
                 <span class="metric-trend">+6 hoje</span>
               </article>
+              </div>
             </section>
 
-            <div class="content-grid">
+            <section id="excursions-view" class="admin-view hidden" data-admin-section>
+              <div class="view-heading">
+                <span class="eyebrow">Catálogo</span>
+                <h2>Gerenciar excursões</h2>
+              </div>
               <section id="excursions-panel" class="panel-box">
-                <h3>Gerenciar excursões</h3>
+                <h3>Adicionar ou editar excursão</h3>
 
                 <form id="excursao-form" class="admin-form">
                   <input type="hidden" id="excursao-id" />
@@ -580,10 +879,12 @@
                     <input id="preco" type="text" placeholder="Ex: R$ 1.799,00" required />
                   </label>
 
-                  <label>
-                    Imagem URL
-                    <input id="imagem" type="url" placeholder="https://..." required />
-                  </label>
+                  <fieldset class="image-manager">
+                    <legend>Fotos do passeio</legend>
+                    <p class="image-manager-note">Adicione links públicos das imagens. A primeira será a capa.</p>
+                    <div id="excursao-imagens" class="excursion-image-list"></div>
+                    <button id="add-image-btn" class="btn btn-secondary" type="button">Adicionar foto</button>
+                  </fieldset>
 
                   <div class="admin-actions">
                     <button class="btn btn-primary" type="submit">Salvar excursão</button>
@@ -591,7 +892,14 @@
                   </div>
                 </form>
               </section>
+              <div class="admin-list" id="admin-list"></div>
+            </section>
 
+            <section id="budgets-view" class="admin-view hidden" data-admin-section>
+              <div class="view-heading">
+                <span class="eyebrow">Atendimento</span>
+                <h2>Todos os orçamentos</h2>
+              </div>
               <aside id="budgets-panel" class="panel-box">
                 <h3>Solicitações de orçamento</h3>
                 <div class="budget-table-wrapper">
@@ -609,9 +917,7 @@
                   </table>
                 </div>
               </aside>
-            </div>
-
-            <div class="admin-list" id="admin-list"></div>
+            </section>
           </main>
         </div>
       </div>
@@ -631,6 +937,10 @@
       const adminList = document.getElementById('admin-list');
       const logoutBtn = document.getElementById('logout-btn');
       const budgetTableBody = document.getElementById('budget-table-body');
+      const excursionImageList = document.getElementById('excursao-imagens');
+      const recentRequestsList = document.getElementById('recent-requests-list');
+      const adminNavigation = document.getElementById('admin-navigation');
+      let currentExcursions = [];
 
       const BUDGET_API_URL = 'https://mariastour-production.up.railway.app/api/budget-requests';
       const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (character) => ({
@@ -641,9 +951,72 @@
         "'": '&#39;'
       })[character]);
 
+      const getExcursionImages = (item) => {
+        const images = Array.isArray(item.imagens) ? item.imagens : [item.imagem];
+        return images.filter((image) => typeof image === 'string' && image.trim());
+      };
+
+      const renderExcursionImages = (images = []) => {
+        const imageUrls = images.length ? images : [''];
+        excursionImageList.innerHTML = imageUrls.map((image, index) => `
+          <div class="excursion-image-entry">
+            <label>
+              Foto ${index + 1}
+              <input data-tour-image type="url" value="${escapeHtml(image)}" placeholder="https://..." required />
+            </label>
+            <img class="excursion-image-preview" src="${escapeHtml(image)}" alt="Prévia da foto ${index + 1}" ${image ? '' : 'hidden'} />
+            <button class="remove-image-btn" data-remove-image type="button" aria-label="Remover foto ${index + 1}">Remover</button>
+          </div>
+        `).join('');
+      };
+
+      excursionImageList.addEventListener('input', (event) => {
+        if (!event.target.matches('[data-tour-image]')) return;
+        const preview = event.target.closest('.excursion-image-entry').querySelector('.excursion-image-preview');
+        const imageUrl = event.target.value.trim();
+        preview.hidden = !imageUrl;
+        if (imageUrl) preview.src = imageUrl;
+      });
+
+      excursionImageList.addEventListener('click', (event) => {
+        const removeButton = event.target.closest('[data-remove-image]');
+        if (!removeButton) return;
+
+        const remainingImages = [...excursionImageList.querySelectorAll('[data-tour-image]')]
+          .filter((input) => input !== removeButton.closest('.excursion-image-entry').querySelector('[data-tour-image]'))
+          .map((input) => input.value.trim())
+          .filter(Boolean);
+        renderExcursionImages(remainingImages);
+      });
+
+      document.getElementById('add-image-btn').addEventListener('click', () => {
+        const currentImages = [...excursionImageList.querySelectorAll('[data-tour-image]')]
+          .map((input) => input.value.trim());
+        renderExcursionImages([...currentImages, '']);
+        excursionImageList.querySelector('.excursion-image-entry:last-child input').focus();
+      });
+
+      renderExcursionImages();
+
       const renderBudgetTable = async () => {
         const response = await fetch(BUDGET_API_URL);
         const budgetRequests = await response.json();
+
+        recentRequestsList.innerHTML = budgetRequests.length
+          ? budgetRequests.slice(0, 5).map((item) => `
+            <article class="recent-request">
+              <div class="recent-request-person">
+                <strong>${escapeHtml(item.nome)}</strong>
+                <span class="recent-request-destination">${escapeHtml(item.destino)}</span>
+              </div>
+              <div class="recent-request-contact">
+                ${item.email ? `<a class="budget-contact" href="mailto:${encodeURIComponent(item.email).replace(/%40/gi, '@')}">${escapeHtml(item.email)}</a>` : ''}
+                ${item.numero ? `<a class="budget-contact" href="tel:${item.numero.replace(/[^\d+]/g, '')}">${escapeHtml(item.numero)}</a>` : ''}
+              </div>
+              <span class="recent-request-status ${item.status === 'Respondido' ? 'done' : 'pending'}">${escapeHtml(item.status)}</span>
+            </article>
+          `).join('')
+          : '<p class="muted">Ainda não há solicitações de orçamento.</p>';
 
         budgetTableBody.innerHTML = budgetRequests.map((item) => `
           <tr>
@@ -671,7 +1044,7 @@
             });
 
             renderBudgetTable();
-            updateDashboardSummary([]);
+            updateDashboardSummary(currentExcursions);
           });
         });
       };
@@ -691,6 +1064,7 @@
       };
 
       const renderList = (items) => {
+        currentExcursions = items;
         updateDashboardSummary(items);
 
         adminList.innerHTML = items.map((item) => `
@@ -704,6 +1078,7 @@
             </div>
             <p class="muted">${item.categoria} · ${item.duracao}</p>
             <p>${item.descricao}</p>
+            <p class="muted">${getExcursionImages(item).length} foto(s)</p>
             <p><strong>${item.preco}</strong></p>
           </div>
         `).join('');
@@ -718,7 +1093,7 @@
             document.getElementById('descricao').value = item.descricao;
             document.getElementById('duracao').value = item.duracao;
             document.getElementById('preco').value = item.preco;
-            document.getElementById('imagem').value = item.imagem;
+            renderExcursionImages(getExcursionImages(item));
             window.scrollTo({ top: 0, behavior: 'smooth' });
           });
         });
@@ -737,7 +1112,26 @@
         renderList(items);
       };
 
-      renderBudgetTable();
+      const showAdminView = (viewName) => {
+        document.querySelectorAll('[data-admin-section]').forEach((section) => {
+          section.classList.toggle('hidden', section.id !== `${viewName}-view`);
+        });
+
+        adminNavigation.querySelectorAll('[data-admin-view]').forEach((button) => {
+          const isActive = button.dataset.adminView === viewName;
+          button.classList.toggle('active', isActive);
+          if (isActive) button.setAttribute('aria-current', 'page');
+          else button.removeAttribute('aria-current');
+        });
+
+        if (viewName === 'home' || viewName === 'budgets') renderBudgetTable();
+        if (viewName === 'dashboard' || viewName === 'excursions') loadExcursions();
+      };
+
+      adminNavigation.addEventListener('click', (event) => {
+        const button = event.target.closest('[data-admin-view]');
+        if (button) showAdminView(button.dataset.adminView);
+      });
 
       const login = () => {
         const user = document.getElementById('login-user').value;
@@ -747,8 +1141,7 @@
           localStorage.setItem('mariatour_user', user);
           loginView.classList.add('hidden');
           adminView.classList.remove('hidden');
-          loadExcursions();
-          renderBudgetTable();
+          showAdminView('home');
           return;
         }
 
@@ -778,7 +1171,10 @@
           descricao: document.getElementById('descricao').value,
           duracao: document.getElementById('duracao').value,
           preco: document.getElementById('preco').value,
-          imagem: document.getElementById('imagem').value,
+          imagens: [...excursionImageList.querySelectorAll('[data-tour-image]')]
+            .map((input) => input.value.trim())
+            .filter(Boolean),
+          imagem: excursionImageList.querySelector('[data-tour-image]').value.trim(),
           link: `passeio.html?id=${encodeURIComponent(id)}`
         };
 
@@ -793,11 +1189,13 @@
 
         loadExcursions();
         excursaoForm.reset();
+        renderExcursionImages();
         document.getElementById('excursao-id').value = '';
       });
 
       document.getElementById('reset-form-btn').addEventListener('click', () => {
         excursaoForm.reset();
+        renderExcursionImages();
         document.getElementById('excursao-id').value = '';
       });
 
@@ -805,8 +1203,7 @@
       if (userStored && USERS[userStored]) {
         loginView.classList.add('hidden');
         adminView.classList.remove('hidden');
-        loadExcursions();
-        renderBudgetTable();
+        showAdminView('home');
       }
     </script>
   </body>
