@@ -29,21 +29,26 @@ if (navToggle && mainNav) {
 const renderTours = (items) => {
   if (!homeList) return;
 
-  homeList.innerHTML = items.map((item) => `
-    <article class="tour-card" data-category="${item.categoria}">
-      <img src="${item.imagens?.[0] || item.imagem}" alt="${item.titulo}" />
-      <div class="tour-body">
-        <div class="tour-tag">${item.categoria}</div>
-        <h3>${item.titulo}</h3>
-        <p>${item.descricao}</p>
-        <div class="tour-meta">
-          <span>${item.duracao}</span>
-          <span>${item.preco}</span>
-        </div>
-        <a class="card-link" href="pages/passeio.html?id=${encodeURIComponent(item.id)}">Ver excursão</a>
-      </div>
-    </article>
-  `).join('');
+  homeList.replaceChildren();
+  items.forEach((item) => {
+    const card = document.createElement('article');
+    card.className = 'tour-card';
+    card.dataset.category = item.categoria || '';
+    const image = document.createElement('img');
+    image.src = item.imagens?.[0] || item.imagem || '';
+    image.alt = `Foto de ${item.titulo || 'excursão'}`;
+    image.loading = 'lazy';
+    const body = document.createElement('div'); body.className = 'tour-body';
+    const tag = document.createElement('div'); tag.className = 'tour-tag'; tag.textContent = item.categoria || '';
+    const title = document.createElement('h3'); title.textContent = item.titulo || '';
+    const description = document.createElement('p'); description.textContent = item.descricao || '';
+    const meta = document.createElement('div'); meta.className = 'tour-meta';
+    const duration = document.createElement('span'); duration.textContent = item.duracao || '';
+    const price = document.createElement('span'); price.textContent = item.preco || '';
+    const link = document.createElement('a'); link.className = 'card-link'; link.href = `pages/passeio.html?id=${encodeURIComponent(item.id)}`; link.textContent = 'Ver excursão';
+    meta.append(duration, price); body.append(tag, title, description, meta, link); card.append(image, body); homeList.append(card);
+  });
+  if (!items.length) homeList.textContent = 'Nenhuma excursão disponível no momento.';
 
   const cards = document.querySelectorAll('.tour-card');
   filterButtons.forEach((button) => {
@@ -149,9 +154,12 @@ if (contactForm) {
     const numero = contactForm.querySelector('input[type="tel"]').value.trim();
     const destino = contactForm.querySelector('select').value;
     const button = contactForm.querySelector('button');
+    const originalText = button?.textContent;
+    if (button) { button.disabled = true; button.textContent = 'Enviando...'; }
 
     if (!nome || !email || !numero || !destino) {
       alert('Preencha nome, e-mail, número e destino para continuar.');
+      if (button) { button.disabled = false; button.textContent = originalText; }
       return;
     }
 
@@ -167,7 +175,6 @@ if (contactForm) {
       }
 
       if (button) {
-        const originalText = button.textContent;
         button.textContent = 'Solicitação enviada!';
         button.disabled = true;
 
@@ -180,6 +187,7 @@ if (contactForm) {
     } catch (error) {
       console.error(error);
       alert('Não foi possível enviar a solicitação. Tente novamente.');
+      if (button) { button.disabled = false; button.textContent = originalText; }
     }
   });
 }

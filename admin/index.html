@@ -826,16 +826,8 @@
         <h2>Entrar no painel</h2>
         <form id="login-form" class="admin-form">
           <label>
-            Usuário
-            <select id="login-user">
-              <option value="programador">Programador</option>
-              <option value="operadora">Operadora</option>
-            </select>
-          </label>
-
-          <label>
-            Senha
-            <input id="login-password" type="password" placeholder="Digite a senha" />
+            Token administrativo
+            <input id="login-password" type="password" placeholder="Token administrativo" autocomplete="current-password" required />
           </label>
 
           <button class="btn btn-primary" type="submit">Entrar</button>
@@ -998,11 +990,6 @@
     </div>
 
     <script>
-      const USERS = {
-        programador: '123456',
-        operadora: 'maria123'
-      };
-
       const API_URL = 'https://mariastour-production.up.railway.app/api/excursions';
       const loginView = document.getElementById('login-view');
       const adminView = document.getElementById('admin-view');
@@ -1019,6 +1006,8 @@
       let currentExcursions = [];
 
       const BUDGET_API_URL = 'https://mariastour-production.up.railway.app/api/budget-requests';
+      let adminToken = sessionStorage.getItem('mariatour_admin_token') || '';
+      const adminFetch = (url, options = {}) => fetch(url, { ...options, headers: { ...options.headers, Authorization: `Bearer ${adminToken}` } });
       const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (character) => ({
         '&': '&amp;',
         '<': '&lt;',
@@ -1075,7 +1064,7 @@
       renderExcursionImages();
 
       const renderBudgetTable = async () => {
-        const response = await fetch(BUDGET_API_URL);
+        const response = await adminFetch(BUDGET_API_URL);
         const budgetRequests = await response.json();
 
         recentRequestsList.innerHTML = budgetRequests.length
@@ -1113,7 +1102,7 @@
             const id = button.dataset.id;
             const nextStatus = button.dataset.status === 'Pendente' ? 'Respondido' : 'Pendente';
 
-            await fetch(`${BUDGET_API_URL}/${id}`, {
+            await adminFetch(`${BUDGET_API_URL}/${id}`, {
               method: 'PUT',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ status: nextStatus })
@@ -1126,7 +1115,7 @@
       };
 
       const updateDashboardSummary = (items) => {
-        fetch(BUDGET_API_URL)
+        adminFetch(BUDGET_API_URL)
           .then((response) => response.json())
           .then((budgetRequests) => {
             document.getElementById('metric-excursions').textContent = items.length;
@@ -1146,16 +1135,16 @@
         adminList.innerHTML = items.map((item) => `
           <div class="admin-item">
             <div class="admin-item-header">
-              <h3>${item.titulo}</h3>
+              <h3>${escapeHtml(item.titulo)}</h3>
               <div class="admin-actions">
                 <button class="btn btn-secondary" data-edit="${item.id}" type="button">Editar</button>
                 <button class="btn btn-primary" data-delete="${item.id}" type="button">Excluir</button>
               </div>
             </div>
-            <p class="muted">${item.categoria} · ${item.duracao}</p>
-            <p>${item.descricao}</p>
+            <p class="muted">${escapeHtml(item.categoria)} · ${escapeHtml(item.duracao)}</p>
+            <p>${escapeHtml(item.descricao)}</p>
             <p class="muted">${getExcursionImages(item).length} foto(s)</p>
-            <p><strong>${item.preco}</strong></p>
+            <p><strong>${escapeHtml(item.preco)}</strong></p>
           </div>
         `).join('');
 
@@ -1176,7 +1165,7 @@
 
         document.querySelectorAll('[data-delete]').forEach((button) => {
           button.addEventListener('click', async () => {
-            await fetch(`${API_URL}/${button.dataset.delete}`, { method: 'DELETE' });
+            await adminFetch(`${API_URL}/${button.dataset.delete}`, { method: 'DELETE' });
             loadExcursions();
           });
         });
@@ -1231,19 +1220,16 @@
         if (window.matchMedia('(max-width: 900px)').matches) setSidebarMenuOpen(false, true);
       });
 
-      const login = () => {
-        const user = document.getElementById('login-user').value;
-        const password = document.getElementById('login-password').value;
-
-        if (USERS[user] && USERS[user] === password) {
-          localStorage.setItem('mariatour_user', user);
-          loginView.classList.add('hidden');
-          adminView.classList.remove('hidden');
-          showAdminView('home');
-          return;
-        }
-
-        alert('Usuário ou senha inválidos.');
+      const login = async () => {
+        const token = document.getElementById('login-password').value.trim();
+        if (!token) { alert('Informe o token administrativo.'); return; }
+        adminToken = token;
+        try {
+          const response = await adminFetch(BUDGET_API_URL);
+          if (!response.ok) throw new Error('Token inválido ou backend não configurado.');
+          sessionStorage.setItem('mariatour_admin_token', adminToken);
+          loginView.classList.add('hidden'); adminView.classList.remove('hidden'); showAdminView('home');
+        } catch (error) { adminToken = ''; alert(error.message); }
       };
 
       loginForm.addEventListener('submit', (event) => {
@@ -1252,7 +1238,8 @@
       });
 
       logoutBtn.addEventListener('click', () => {
-        localStorage.removeItem('mariatour_user');
+        sessionStorage.removeItem('mariatour_admin_token');
+        adminToken = '';
         adminView.classList.add('hidden');
         loginView.classList.remove('hidden');
         document.getElementById('login-password').value = '';
@@ -1279,7 +1266,7 @@
         const method = document.getElementById('excursao-id').value ? 'PUT' : 'POST';
         const url = document.getElementById('excursao-id').value ? `${API_URL}/${id}` : API_URL;
 
-        await fetch(url, {
+        await adminFetch(url, {
           method,
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
@@ -1297,11 +1284,11 @@
         document.getElementById('excursao-id').value = '';
       });
 
-      const userStored = localStorage.getItem('mariatour_user');
-      if (userStored && USERS[userStored]) {
-        loginView.classList.add('hidden');
-        adminView.classList.remove('hidden');
-        showAdminView('home');
+      if (adminToken) {
+        adminFetch(BUDGET_API_URL).then((response) => {
+          if (response.ok) { loginView.classList.add('hidden'); adminView.classList.remove('hidden'); showAdminView('home'); }
+          else { sessionStorage.removeItem('mariatour_admin_token'); adminToken = ''; }
+        }).catch(() => { sessionStorage.removeItem('mariatour_admin_token'); adminToken = ''; });
       }
     </script>
   </body>

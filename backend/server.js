@@ -2,231 +2,93 @@ const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 
 const app = express();
-const PORT = 3000;
+const PORT = Number(process.env.PORT) || 3000;
 const dataFile = path.join(__dirname, 'data', 'excursions.json');
 const budgetDataFile = path.join(__dirname, 'data', 'budget-requests.json');
+const allowedOrigins = (process.env.CORS_ORIGINS || '').split(',').map((origin) => origin.trim()).filter(Boolean);
 
-app.use(cors());
-app.use(express.json());
+app.disable('x-powered-by');
+app.use(helmet());
+app.use(cors({ origin: (origin, callback) => {
+  if (!origin || allowedOrigins.length === 0 || allowedOrigins.includes(origin)) return callback(null, true);
+  return callback(new Error('Origem não permitida pelo CORS.'));
+} }));
+app.use(express.json({ limit: '32kb' }));
+app.use(rateLimit({ windowMs: 15 * 60 * 1000, limit: 300, standardHeaders: 'draft-8', legacyHeaders: false }));
 
-const ensureDataFile = () => {
-  if (!fs.existsSync(dataFile)) {
-    const defaultData = [
-      {
-        id: 'ilha-grande',
-        titulo: 'Ilha Grande - RJ',
-        categoria: 'praia',
-        descricao: 'Uma experiência de praia, mar cristalino e paisagens incríveis para relaxar e aproveitar o litoral.',
-        duracao: '1 dia',
-        preco: 'R$ 1.799,00',
-        imagem: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80',
-        link: 'ilha-grande.html'
-      },
-      {
-        id: 'petropolis',
-        titulo: 'Petrópolis',
-        categoria: 'cidade',
-        descricao: 'Visite a cidade imperial com clima agradável, natureza e pontos turísticos encantadores.',
-        duracao: '1 dia',
-        preco: 'R$ 350,00',
-        imagem: 'https://images.unsplash.com/photo-1521295121783-8a321d551ad2?auto=format&fit=crop&w=900&q=80',
-        link: 'petropolis.html'
-      },
-      {
-        id: 'show-luan',
-        titulo: 'Bate e volta - Luan Santana',
-        categoria: 'evento',
-        descricao: 'Uma viagem prática e segura para curtir o show do Luan Santana em Cariacica - ES.',
-        duracao: '1 noite',
-        preco: 'R$ 120,00',
-        imagem: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=900&q=80',
-        link: 'show-luan.html'
-      },
-      {
-        id: 'dia-das-criancas',
-        titulo: 'Bate e volta - Dia das Crianças',
-        categoria: 'familia',
-        descricao: 'Uma programação divertida e segura para crianças e famílias aproveitarem o Dia das Crianças com alegria.',
-        duracao: '1 dia',
-        preco: 'adulto R$ 259,90',
-        imagem: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=900&q=80',
-        link: 'dia-das-criancas.html'
-      }
-    ];
-
-    fs.writeFileSync(dataFile, JSON.stringify(defaultData, null, 2));
-  }
+const sendError = (res, error) => {
+  console.error(error);
+  res.status(500).json({ message: 'Erro interno do servidor.' });
+};
+const readJson = (file, fallback) => {
+  if (!fs.existsSync(file)) fs.writeFileSync(file, JSON.stringify(fallback, null, 2));
+  return JSON.parse(fs.readFileSync(file, 'utf8'));
+};
+const writeJson = (file, data) => fs.writeFileSync(file, JSON.stringify(data, null, 2));
+const readExcursions = () => readJson(dataFile, []);
+const readBudgetRequests = () => readJson(budgetDataFile, []);
+const cryptoRandomId = () => crypto.randomUUID();
+const cleanText = (value, max) => typeof value === 'string' ? value.trim().slice(0, max) : '';
+const isValidUrl = (value) => {
+  try { const url = new URL(value); return url.protocol === 'https:'; } catch { return false; }
 };
 
-const readExcursions = () => {
-  ensureDataFile();
-  const raw = fs.readFileSync(dataFile, 'utf8');
-  return JSON.parse(raw);
+// Admin access is controlled only on the server; configure ADMIN_TOKEN as a secret environment variable.
+const requireAdmin = (req, res, next) => {
+  const expected = process.env.ADMIN_TOKEN;
+  const supplied = req.get('authorization')?.replace(/^Bearer\s+/i, '') || '';
+  if (!expected) return res.status(503).json({ message: 'A administração não está configurada.' });
+  const a = Buffer.from(supplied); const b = Buffer.from(expected);
+  if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) return res.status(401).json({ message: 'Não autorizado.' });
+  next();
 };
-
-const writeExcursions = (data) => {
-  fs.writeFileSync(dataFile, JSON.stringify(data, null, 2));
-};
-
-const ensureBudgetDataFile = () => {
-  if (!fs.existsSync(budgetDataFile)) {
-    const defaultBudgetRequests = [
-      {
-        id: 'budget-1',
-        nome: 'Laura Santos',
-        email: 'laura@email.com',
-        numero: '(21) 99999-1111',
-        destino: 'Ilha Grande',
-        status: 'Pendente'
-      },
-      {
-        id: 'budget-2',
-        nome: 'Pedro Almeida',
-        email: 'pedro@email.com',
-        numero: '(21) 98888-2222',
-        destino: 'Petrópolis',
-        status: 'Respondido'
-      },
-      {
-        id: 'budget-3',
-        nome: 'Marina Costa',
-        email: 'marina@email.com',
-        numero: '(28) 97777-3333',
-        destino: 'Show Luan Santana',
-        status: 'Pendente'
-      }
-    ];
-
-    fs.writeFileSync(budgetDataFile, JSON.stringify(defaultBudgetRequests, null, 2));
-  }
-};
-
-const readBudgetRequests = () => {
-  ensureBudgetDataFile();
-  const raw = fs.readFileSync(budgetDataFile, 'utf8');
-  return JSON.parse(raw);
-};
-
-const writeBudgetRequests = (data) => {
-  fs.writeFileSync(budgetDataFile, JSON.stringify(data, null, 2));
-};
+const adminLimiter = rateLimit({ windowMs: 15 * 60 * 1000, limit: 60, standardHeaders: 'draft-8', legacyHeaders: false });
 
 app.get('/api/excursions', (req, res) => {
-  const excursions = readExcursions();
-  res.json(excursions);
+  try { res.json(readExcursions()); } catch (error) { sendError(res, error); }
+});
+app.post('/api/excursions', adminLimiter, requireAdmin, (req, res) => {
+  try {
+    const p = req.body || {};
+    const titulo = cleanText(p.titulo, 120); const categoria = cleanText(p.categoria, 40);
+    const descricao = cleanText(p.descricao, 2000); const duracao = cleanText(p.duracao, 80); const preco = cleanText(p.preco, 80);
+    const imagens = (Array.isArray(p.imagens) ? p.imagens : [p.imagem]).filter((url) => typeof url === 'string' && isValidUrl(url)).slice(0, 10);
+    if (!titulo || !categoria || !descricao || !duracao || !preco || imagens.length === 0) return res.status(400).json({ message: 'Dados inválidos ou incompletos. Informe ao menos uma imagem HTTPS.' });
+    const excursions = readExcursions(); const id = cryptoRandomId();
+    const item = { id, titulo, categoria, descricao, duracao, preco, imagem: imagens[0], imagens, link: `passeio.html?id=${encodeURIComponent(id)}` };
+    excursions.unshift(item); writeJson(dataFile, excursions); res.status(201).json(item);
+  } catch (error) { sendError(res, error); }
+});
+app.put('/api/excursions/:id', adminLimiter, requireAdmin, (req, res) => {
+  try {
+    const excursions = readExcursions(); const i = excursions.findIndex((item) => item.id === req.params.id);
+    if (i < 0) return res.status(404).json({ message: 'Excursão não encontrada.' });
+    const p = req.body || {}; const images = (Array.isArray(p.imagens) ? p.imagens : [p.imagem]).filter((url) => typeof url === 'string' && isValidUrl(url)).slice(0, 10);
+    const fields = { titulo: cleanText(p.titulo, 120), categoria: cleanText(p.categoria, 40), descricao: cleanText(p.descricao, 2000), duracao: cleanText(p.duracao, 80), preco: cleanText(p.preco, 80) };
+    if (Object.values(fields).some((v) => !v) || !images.length) return res.status(400).json({ message: 'Dados inválidos ou incompletos.' });
+    excursions[i] = { ...excursions[i], ...fields, imagens: images, imagem: images[0], id: req.params.id };
+    writeJson(dataFile, excursions); res.json(excursions[i]);
+  } catch (error) { sendError(res, error); }
+});
+app.delete('/api/excursions/:id', adminLimiter, requireAdmin, (req, res) => {
+  try { const items = readExcursions(); const filtered = items.filter((item) => item.id !== req.params.id); if (items.length === filtered.length) return res.status(404).json({ message: 'Excursão não encontrada.' }); writeJson(dataFile, filtered); res.json({ message: 'Excursão removida.' }); } catch (error) { sendError(res, error); }
+});
+app.post('/api/budget-requests', rateLimit({ windowMs: 60 * 60 * 1000, limit: 10, standardHeaders: 'draft-8', legacyHeaders: false }), (req, res) => {
+  try {
+    const p = req.body || {}; const nome = cleanText(p.nome, 100); const email = cleanText(p.email, 254).toLowerCase(); const numero = cleanText(p.numero, 30); const destino = cleanText(p.destino, 120);
+    if (!nome || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || !/^[-+()\d\s.]{8,30}$/.test(numero) || !destino) return res.status(400).json({ message: 'Informe nome, e-mail, telefone e destino válidos.' });
+    const requests = readBudgetRequests(); const item = { id: cryptoRandomId(), nome, email, numero, destino, status: 'Pendente', criadoEm: new Date().toISOString() };
+    requests.unshift(item); writeJson(budgetDataFile, requests); res.status(201).json({ message: 'Solicitação recebida.' });
+  } catch (error) { sendError(res, error); }
+});
+app.get('/api/budget-requests', adminLimiter, requireAdmin, (req, res) => { try { res.json(readBudgetRequests()); } catch (error) { sendError(res, error); } });
+app.put('/api/budget-requests/:id', adminLimiter, requireAdmin, (req, res) => {
+  try { const status = req.body?.status; if (!['Pendente', 'Respondido'].includes(status)) return res.status(400).json({ message: 'Status inválido.' }); const requests = readBudgetRequests(); const i = requests.findIndex((item) => item.id === req.params.id); if (i < 0) return res.status(404).json({ message: 'Solicitação não encontrada.' }); requests[i].status = status; writeJson(budgetDataFile, requests); res.json(requests[i]); } catch (error) { sendError(res, error); }
 });
 
-app.post('/api/excursions', (req, res) => {
-  const payload = req.body;
-  const excursions = readExcursions();
-  const images = Array.isArray(payload.imagens)
-    ? payload.imagens.filter((image) => typeof image === 'string' && image.trim())
-    : payload.imagem ? [payload.imagem] : [];
-
-  const newItem = {
-    id: payload.id || cryptoRandomId(),
-    titulo: payload.titulo,
-    categoria: payload.categoria,
-    descricao: payload.descricao,
-    duracao: payload.duracao,
-    preco: payload.preco,
-    imagem: images[0] || '',
-    imagens: images,
-    link: payload.link || `passeio.html?id=${encodeURIComponent(payload.id || cryptoRandomId())}`
-  };
-
-  const existingIndex = excursions.findIndex((item) => item.id === newItem.id);
-  if (existingIndex >= 0) {
-    excursions[existingIndex] = newItem;
-  } else {
-    excursions.unshift(newItem);
-  }
-
-  writeExcursions(excursions);
-  res.status(201).json(newItem);
-});
-
-app.put('/api/excursions/:id', (req, res) => {
-  const { id } = req.params;
-  const payload = req.body;
-  const excursions = readExcursions();
-  const index = excursions.findIndex((item) => item.id === id);
-
-  if (index === -1) {
-    return res.status(404).json({ message: 'Excursão não encontrada.' });
-  }
-
-  excursions[index] = {
-    ...excursions[index],
-    ...payload,
-    id
-  };
-
-  writeExcursions(excursions);
-  res.json(excursions[index]);
-});
-
-app.delete('/api/excursions/:id', (req, res) => {
-  const { id } = req.params;
-  const excursions = readExcursions();
-  const filtered = excursions.filter((item) => item.id !== id);
-
-  writeExcursions(filtered);
-  res.json({ message: 'Excursão removida com sucesso.' });
-});
-
-app.get('/api/budget-requests', (req, res) => {
-  const budgetRequests = readBudgetRequests();
-  res.json(budgetRequests);
-});
-
-app.post('/api/budget-requests', (req, res) => {
-  const { nome, email, numero, destino, status = 'Pendente' } = req.body;
-
-  if (!nome || !email || !numero || !destino) {
-    return res.status(400).json({ message: 'Nome, e-mail, número e destino são obrigatórios.' });
-  }
-
-  const budgetRequests = readBudgetRequests();
-  const newRequest = {
-    id: cryptoRandomId(),
-    nome,
-    email,
-    numero,
-    destino,
-    status
-  };
-
-  budgetRequests.unshift(newRequest);
-  writeBudgetRequests(budgetRequests);
-  res.status(201).json(newRequest);
-});
-
-app.put('/api/budget-requests/:id', (req, res) => {
-  const { id } = req.params;
-  const { status } = req.body;
-  const budgetRequests = readBudgetRequests();
-  const index = budgetRequests.findIndex((request) => request.id === id);
-
-  if (index === -1) {
-    return res.status(404).json({ message: 'Solicitação não encontrada.' });
-  }
-
-  budgetRequests[index] = {
-    ...budgetRequests[index],
-    status
-  };
-
-  writeBudgetRequests(budgetRequests);
-  res.json(budgetRequests[index]);
-});
-
-function cryptoRandomId() {
-  return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
-}
-
-app.listen(PORT, () => {
-  console.log(`Servidor backend rodando em http://localhost:${PORT}`);
-});
+app.listen(PORT, () => console.log(`Servidor backend rodando na porta ${PORT}`));
