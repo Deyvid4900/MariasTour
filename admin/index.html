@@ -168,6 +168,13 @@
         background: linear-gradient(180deg, #fffaf5 0%, #fff 100%);
       }
 
+      .sidebar-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
       .sidebar-brand {
         display: flex;
         align-items: center;
@@ -190,6 +197,60 @@
       .sidebar-nav {
         display: grid;
         gap: 6px;
+      }
+
+      .sidebar-toggle {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        min-height: 44px;
+        padding: 0.55rem 0.75rem;
+        border: 1px solid var(--admin-border);
+        border-radius: 10px;
+        background: #fff;
+        color: var(--admin-text);
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .hamburger-icon {
+        display: grid;
+        gap: 4px;
+        width: 18px;
+      }
+
+      .hamburger-icon span {
+        display: block;
+        width: 18px;
+        height: 2px;
+        border-radius: 2px;
+        background: currentColor;
+        transition: transform 0.18s ease;
+      }
+
+      .sidebar-toggle[aria-expanded="true"] .hamburger-icon span:first-child {
+        transform: translateY(6px) rotate(45deg);
+      }
+
+      .sidebar-toggle[aria-expanded="true"] .hamburger-icon span:nth-child(2) {
+        opacity: 0;
+      }
+
+      .sidebar-toggle[aria-expanded="true"] .hamburger-icon span:last-child {
+        transform: translateY(-6px) rotate(-45deg);
+      }
+
+      .sidebar-menu {
+        display: grid;
+        gap: 16px;
+      }
+
+      .sidebar-logout {
+        width: 100%;
+        min-height: 46px;
+        margin-top: 4px;
       }
 
       .sidebar-link {
@@ -480,17 +541,32 @@
 
         .admin-sidebar {
           position: static;
-          gap: 12px;
+          grid-template-columns: minmax(0, 1fr) auto;
+          align-items: center;
+          gap: 0;
           padding: 14px;
         }
 
-        .sidebar-nav {
-          grid-template-columns: repeat(4, minmax(0, 1fr));
+        .sidebar-toggle {
+          display: inline-flex;
         }
 
-        .sidebar-link {
-          padding-inline: 0.6rem;
-          text-align: center;
+        .sidebar-menu {
+          display: none;
+        }
+
+        .admin-sidebar.is-open .sidebar-menu {
+          display: grid;
+          grid-column: 1 / -1;
+          padding-top: 12px;
+        }
+
+        .admin-sidebar.is-open .sidebar-nav {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar-logout {
+          min-height: 48px;
         }
 
         .dashboard-grid,
@@ -735,17 +811,7 @@
         }
       }
 
-      @media (max-width: 700px) {
-        .sidebar-nav {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-      }
-
       @media (max-width: 380px) {
-        .sidebar-nav {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-
         .budget-table td {
           grid-template-columns: 72px minmax(0, 1fr);
           gap: 8px;
@@ -778,17 +844,26 @@
 
       <div id="admin-view" class="admin-card hidden">
         <div class="admin-layout">
-          <aside class="admin-sidebar">
-            <div class="sidebar-brand">
-              <span class="sidebar-brand-mark">M</span>
-              <span>MariaTour</span>
+          <aside id="admin-sidebar" class="admin-sidebar">
+            <div class="sidebar-top">
+              <div class="sidebar-brand">
+                <span class="sidebar-brand-mark">M</span>
+                <span>MariaTour</span>
+              </div>
+              <button id="sidebar-toggle" class="sidebar-toggle" type="button" aria-label="Abrir menu" aria-controls="admin-menu" aria-expanded="false">
+                <span class="hamburger-icon" aria-hidden="true"><span></span><span></span><span></span></span>
+                <span class="sidebar-toggle-label">Menu</span>
+              </button>
             </div>
-            <nav id="admin-navigation" class="sidebar-nav" aria-label="Seções administrativas">
-              <button class="sidebar-link active" type="button" data-admin-view="home" aria-current="page">Início</button>
-              <button class="sidebar-link" type="button" data-admin-view="dashboard">Dashboard</button>
-              <button class="sidebar-link" type="button" data-admin-view="excursions">Excursões</button>
-              <button class="sidebar-link" type="button" data-admin-view="budgets">Orçamentos</button>
-            </nav>
+            <div id="admin-menu" class="sidebar-menu">
+              <nav id="admin-navigation" class="sidebar-nav" aria-label="Seções administrativas">
+                <button class="sidebar-link active" type="button" data-admin-view="home" aria-current="page">Início</button>
+                <button class="sidebar-link" type="button" data-admin-view="dashboard">Dashboard</button>
+                <button class="sidebar-link" type="button" data-admin-view="excursions">Excursões</button>
+                <button class="sidebar-link" type="button" data-admin-view="budgets">Orçamentos</button>
+              </nav>
+              <button id="logout-btn" class="btn btn-secondary sidebar-logout" type="button">Sair</button>
+            </div>
           </aside>
 
           <main class="admin-main">
@@ -797,7 +872,6 @@
                 <span class="eyebrow">Painel administrativo</span>
                 <h2>MariaTour</h2>
               </div>
-              <button id="logout-btn" class="btn btn-secondary" type="button">Sair</button>
             </header>
 
             <section id="home-view" class="admin-view" data-admin-section>
@@ -940,6 +1014,8 @@
       const excursionImageList = document.getElementById('excursao-imagens');
       const recentRequestsList = document.getElementById('recent-requests-list');
       const adminNavigation = document.getElementById('admin-navigation');
+      const adminSidebar = document.getElementById('admin-sidebar');
+      const sidebarToggle = document.getElementById('sidebar-toggle');
       let currentExcursions = [];
 
       const BUDGET_API_URL = 'https://mariastour-production.up.railway.app/api/budget-requests';
@@ -1128,9 +1204,31 @@
         if (viewName === 'dashboard' || viewName === 'excursions') loadExcursions();
       };
 
+      const setSidebarMenuOpen = (isOpen, returnFocus = false) => {
+        adminSidebar.classList.toggle('is-open', isOpen);
+        sidebarToggle.setAttribute('aria-expanded', String(isOpen));
+        sidebarToggle.setAttribute('aria-label', isOpen ? 'Fechar menu' : 'Abrir menu');
+        sidebarToggle.querySelector('.sidebar-toggle-label').textContent = isOpen ? 'Fechar' : 'Menu';
+        if (!isOpen && returnFocus) sidebarToggle.focus();
+      };
+
+      sidebarToggle.addEventListener('click', () => {
+        const isOpen = sidebarToggle.getAttribute('aria-expanded') !== 'true';
+        setSidebarMenuOpen(isOpen);
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && sidebarToggle.getAttribute('aria-expanded') === 'true') {
+          setSidebarMenuOpen(false, true);
+        }
+      });
+
       adminNavigation.addEventListener('click', (event) => {
         const button = event.target.closest('[data-admin-view]');
-        if (button) showAdminView(button.dataset.adminView);
+        if (!button) return;
+
+        showAdminView(button.dataset.adminView);
+        if (window.matchMedia('(max-width: 900px)').matches) setSidebarMenuOpen(false, true);
       });
 
       const login = () => {
