@@ -623,7 +623,7 @@
         operadora: 'maria123'
       };
 
-      const API_URL = 'http://localhost:3000/api/excursions';
+      const API_URL = 'https://mariastour-production.up.railway.app/api/excursions';
       const loginView = document.getElementById('login-view');
       const adminView = document.getElementById('admin-view');
       const loginForm = document.getElementById('login-form');
@@ -632,7 +632,7 @@
       const logoutBtn = document.getElementById('logout-btn');
       const budgetTableBody = document.getElementById('budget-table-body');
 
-      const BUDGET_API_URL = 'http://localhost:3000/api/budget-requests';
+      const BUDGET_API_URL = 'https://mariastour-production.up.railway.app/api/budget-requests';
       const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (character) => ({
         '&': '&amp;',
         '<': '&lt;',
